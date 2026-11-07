@@ -1,0 +1,94 @@
+{"id": 1, "ts": 1794031956.297, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.7.0 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 2, "ts": 1794031974.912, "level": "info", "action": "download", "message": "下载「使用说明.txt」", "detail": "585 B", "ip": "192.168.2.79"}
+{"id": 3, "ts": 1794032158.559, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.7.0 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 4, "ts": 1794032187.359, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.7.0 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 5, "ts": 1794032229.815, "level": "info", "action": "share.create", "message": "创建分享「demo」", "detail": "1 项 · 7 天 · http://192.168.2.79:8099/s/iQUP4p0aLtEK", "ip": "127.0.0.1"}
+{"id": 6, "ts": 1794032281.453, "level": "info", "action": "share.create", "message": "创建分享「DeepSeek汇总资源下载链接.docx」", "detail": "1 项 · 7 天 · http://192.168.2.79:8099/s/rJKsruxRA4DB", "ip": "127.0.0.1"}
+{"id": 7, "ts": 1794032388.43, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.7.0 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 8, "ts": 1794032831.839, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.7.1 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 9, "ts": 1794032839.386, "level": "info", "action": "share.create", "message": "创建分享「使用说明.txt」", "detail": "1 项 · 7 天 · http://192.168.2.79:8088/s/LquxCh0xIoEO", "ip": "192.168.2.79"}
+{"id": 10, "ts": 1794032845.392, "level": "info", "action": "share.update", "message": "修改分享有效期「使用说明.txt」", "detail": "永久", "ip": "192.168.2.79"}
+{"id": 11, "ts": 1794032862.345, "level": "info", "action": "share.open", "message": "访问分享「使用说明.txt」", "detail": "1 项 · 192.168.2.79", "ip": "192.168.2.79"}
+{"id": 12, "ts": 1794033320.221, "level": "info", "action": "share.create", "message": "创建分享「2 个文件」", "detail": "2 项 · 永久 · http://192.168.2.79:8088/s/gdYlkza1-rC_", "ip": "192.168.2.79"}
+{"id": 13, "ts": 1794033341.256, "level": "info", "action": "share.open", "message": "访问分享「2 个文件」", "detail": "2 项 · 192.168.2.79", "ip": "192.168.2.79"}
+{"id": 14, "ts": 1794033614.503, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.7.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 15, "ts": 1794033635.703, "level": "info", "action": "share.create", "message": "创建分享「DeepSeek汇总资源下载链接.docx」", "detail": "1 项 · 7 天 · http://192.168.2.79:8099/s/D9ZIUOL9VXuQ", "ip": "127.0.0.1"}
+{"id": 16, "ts": 1794033640.462, "level": "info", "action": "share.update", "message": "修改分享有效期「DeepSeek汇总资源下载链接.docx」", "detail": "永久", "ip": "127.0.0.1"}
+{"id": 17, "ts": 1794033644.517, "level": "warn", "action": "share.revoke", "message": "取消分享「DeepSeek汇总资源下载链接.docx」", "detail": "", "ip": "127.0.0.1"}
+{"id": 18, "ts": 1794033665.907, "level": "warn", "action": "share.revoke", "message": "取消分享「demo」", "detail": "", "ip": "127.0.0.1"}
+{"id": 19, "ts": 1794033665.969, "level": "warn", "action": "share.revoke", "message": "取消分享「DeepSeek汇总资源下载链接.docx」", "detail": "", "ip": "127.0.0.1"}
+{"id": 20, "ts": 1794033666.077, "level": "warn", "action": "share.revoke", "message": "取消分享「使用说明.txt」", "detail": "", "ip": "127.0.0.1"}
+{"id": 21, "ts": 1794033666.171, "level": "warn", "action": "share.revoke", "message": "取消分享「2 个文件」", "detail": "", "ip": "127.0.0.1"}
+{"id": 22, "ts": 1794033685.993, "level": "info", "action": "share.create", "message": "创建分享「demo」", "detail": "1 项 · 7 天 · http://192.168.2.79:8099/s/3fmrP1TWHdD1", "ip": "127.0.0.1"}
+{"id": 23, "ts": 1794033742.884, "level": "info", "action": "share.create", "message": "创建分享「DeepSeek汇总资源下载链接.docx」", "detail": "1 项 · 7 天 · http://192.168.2.79:8099/s/qrT28dDryXXw", "ip": "127.0.0.1"}
+{"id": 24, "ts": 1794033779.713, "level": "warn", "action": "share.revoke", "message": "取消分享「DeepSeek汇总资源下载链接.docx」", "detail": "", "ip": "127.0.0.1"}
+{"id": 25, "ts": 1794033779.823, "level": "warn", "action": "share.revoke", "message": "取消分享「demo」", "detail": "", "ip": "127.0.0.1"}
+{"id": 26, "ts": 1794033806.595, "level": "info", "action": "share.create", "message": "创建分享「DeepSeek汇总资源下载链接.docx」", "detail": "1 项 · 7 天 · http://192.168.2.79:8099/s/ghLeIsqGsUaE", "ip": "127.0.0.1"}
+{"id": 27, "ts": 1794033806.602, "level": "info", "action": "share.create", "message": "创建分享「使用说明.txt」", "detail": "1 项 · 永久 · http://192.168.2.79:8099/s/I0xpD_4ODuXG", "ip": "127.0.0.1"}
+{"id": 28, "ts": 1794033817.509, "level": "warn", "action": "share.revoke", "message": "取消分享「DeepSeek汇总资源下载链接.docx」", "detail": "", "ip": "127.0.0.1"}
+{"id": 29, "ts": 1794033817.596, "level": "warn", "action": "share.revoke", "message": "取消分享「使用说明.txt」", "detail": "", "ip": "127.0.0.1"}
+{"id": 30, "ts": 1794034108.639, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.8.0 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 31, "ts": 1794034132.937, "level": "info", "action": "share.create", "message": "创建分享「2 个文件」", "detail": "2 项 · 7 天 · http://192.168.2.79:8088/s/YjaU9Mu7fVyQ", "ip": "192.168.2.79"}
+{"id": 32, "ts": 1794034148.605, "level": "warn", "action": "share.revoke", "message": "取消分享「2 个文件」", "detail": "", "ip": "192.168.2.79"}
+{"id": 33, "ts": 1794034210.825, "level": "info", "action": "share.create", "message": "创建分享「demo」", "detail": "1 项 · 7 天 · http://192.168.2.79:8088/s/vbrMF5e4qPzk", "ip": "127.0.0.1"}
+{"id": 34, "ts": 1794034430.864, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.8.0 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 35, "ts": 1794035027.865, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.8.1 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 36, "ts": 1794035046.685, "level": "warn", "action": "share.revoke", "message": "取消分享「demo」", "detail": "", "ip": "192.168.2.79"}
+{"id": 37, "ts": 1794035071.716, "level": "info", "action": "share.create", "message": "创建分享「打字练习稿.html」", "detail": "1 项 · 7 天 · http://192.168.2.79:8088/s/o6lBIQan_b53", "ip": "192.168.2.79"}
+{"id": 38, "ts": 1794035076.784, "level": "info", "action": "share.update", "message": "修改分享有效期「打字练习稿.html」", "detail": "永久", "ip": "192.168.2.79"}
+{"id": 39, "ts": 1794035086.99, "level": "info", "action": "share.open", "message": "访问分享「打字练习稿.html」", "detail": "1 项 · 192.168.2.79", "ip": "192.168.2.79"}
+{"id": 40, "ts": 1794035117.285, "level": "ok", "action": "upload", "message": "上传 1 个文件到 根目录", "detail": "cover-remotion-intro-16x9.rar · 共 1.4 MB", "ip": "192.168.2.79"}
+{"id": 41, "ts": 1794036130.416, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.8.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 42, "ts": 1794036140.875, "level": "error", "action": "http.501", "message": "GET /api/archive → 501", "detail": "path=cover-remotion-intro-16x9.rar", "ip": "127.0.0.1"}
+{"id": 43, "ts": 1794036170.371, "level": "info", "action": "extract", "message": "解压「项目资料.zip」", "detail": "4 项，4.1 KB → 项目资料/", "ip": "127.0.0.1"}
+{"id": 44, "ts": 1794036170.474, "level": "info", "action": "extract", "message": "解压「evil.zip」", "detail": "3 项，11 B → evil/", "ip": "127.0.0.1"}
+{"id": 45, "ts": 1794036201.064, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.8.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 46, "ts": 1794036250.113, "level": "info", "action": "extract", "message": "解压「备份.tar.gz」", "detail": "2 项，4.5 KB → 备份.tar/", "ip": "127.0.0.1"}
+{"id": 47, "ts": 1794036283.797, "level": "info", "action": "extract", "message": "解压「备份.tar.gz」", "detail": "2 项，4.5 KB → 备份.tar/", "ip": "127.0.0.1"}
+{"id": 48, "ts": 1794036304.067, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.8.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 49, "ts": 1794036316.415, "level": "info", "action": "extract", "message": "解压「备份.tar.gz」", "detail": "2 项，4.5 KB → 备份/", "ip": "127.0.0.1"}
+{"id": 50, "ts": 1794036923.841, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.9.0 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 51, "ts": 1794036986.414, "level": "warn", "action": "delete", "message": "删除 1 项", "detail": "cover-remotion-intro-16x9.rar · 释放 1.4 MB", "ip": "192.168.2.79"}
+{"id": 52, "ts": 1794036990.251, "level": "ok", "action": "upload", "message": "上传 1 个文件到 根目录", "detail": "cover-remotion-intro-16x9.rar · 共 1.4 MB", "ip": "192.168.2.79"}
+{"id": 53, "ts": 1794036999.709, "level": "warn", "action": "delete", "message": "删除 1 项", "detail": "cover-remotion-intro-16x9.rar · 释放 1.4 MB", "ip": "192.168.2.79"}
+{"id": 54, "ts": 1794037015.119, "level": "ok", "action": "upload", "message": "上传 1 个文件到 根目录", "detail": "cover-remotion-intro-16x9.zip · 共 1.4 MB", "ip": "192.168.2.79"}
+{"id": 55, "ts": 1794037036.846, "level": "warn", "action": "share.revoke", "message": "取消分享「打字练习稿.html」", "detail": "", "ip": "192.168.2.79"}
+{"id": 56, "ts": 1794037675.25, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.9.0 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 57, "ts": 1794037711.57, "level": "ok", "action": "remark", "message": "备注「demo」", "detail": "测试文件夹备注：项目素材都在这里", "ip": "127.0.0.1"}
+{"id": 58, "ts": 1794037719.68, "level": "warn", "action": "http.404", "message": "POST /api/remarks → 404", "detail": "", "ip": "127.0.0.1"}
+{"id": 59, "ts": 1794037730.226, "level": "ok", "action": "remark", "message": "备注「使用说明.txt」", "detail": "这是旧版说明，正式版在笔记里", "ip": "127.0.0.1"}
+{"id": 60, "ts": 1794037730.654, "level": "ok", "action": "rename", "message": "重命名「使用说明.txt」→「使用说明-旧.txt」", "detail": "位置 根目录", "ip": "127.0.0.1"}
+{"id": 61, "ts": 1794037730.899, "level": "warn", "action": "http.400", "message": "POST /api/mkdir → 400", "detail": "", "ip": "127.0.0.1"}
+{"id": 62, "ts": 1794037730.998, "level": "warn", "action": "http.400", "message": "POST /api/move → 400", "detail": "", "ip": "127.0.0.1"}
+{"id": 63, "ts": 1794037756.527, "level": "ok", "action": "mkdir", "message": "新建文件夹「归档」", "detail": "位置 根目录", "ip": "127.0.0.1"}
+{"id": 64, "ts": 1794037756.595, "level": "ok", "action": "move", "message": "移动 1 项到 归档", "detail": "使用说明-旧.txt", "ip": "127.0.0.1"}
+{"id": 65, "ts": 1794037767.266, "level": "warn", "action": "delete", "message": "删除 1 项", "detail": "使用说明-旧.txt · 释放 585 B", "ip": "127.0.0.1"}
+{"id": 66, "ts": 1794037768.247, "level": "warn", "action": "delete", "message": "删除 1 项", "detail": "归档（文件夹） · 释放 0 B", "ip": "127.0.0.1"}
+{"id": 67, "ts": 1794037816.763, "level": "ok", "action": "remark", "message": "备注「cover-remotion-intro-16x9.zip」", "detail": "zip 压缩包，解压密码见笔记「归档说明」", "ip": "127.0.0.1"}
+{"id": 68, "ts": 1794037820.86, "level": "ok", "action": "remark", "message": "清除备注「demo」", "detail": "", "ip": "127.0.0.1"}
+{"id": 69, "ts": 1794037846.453, "level": "ok", "action": "remark", "message": "清除备注「demo」", "detail": "", "ip": "127.0.0.1"}
+{"id": 70, "ts": 1794037857.851, "level": "ok", "action": "remark", "message": "清除备注「cover-remotion-intro-16x9.zip」", "detail": "", "ip": "127.0.0.1"}
+{"id": 71, "ts": 1794038016.824, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.10.0 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 72, "ts": 1794038037.335, "level": "ok", "action": "remark", "message": "备注「cover-remotion-intro-16x9.zip」", "detail": "asasdas", "ip": "192.168.2.79"}
+{"id": 73, "ts": 1794038549.556, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.10.0 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 74, "ts": 1794038568.114, "level": "warn", "action": "auth.set", "message": "已开启口令登录，局域网内其他设备需重新登录", "detail": "", "ip": "127.0.0.1"}
+{"id": 75, "ts": 1794038568.814, "level": "warn", "action": "auth.fail", "message": "口令错误，登录被拒绝", "detail": "", "ip": "127.0.0.1"}
+{"id": 76, "ts": 1794038568.815, "level": "warn", "action": "http.403", "message": "POST /api/login → 403", "detail": "", "ip": "127.0.0.1"}
+{"id": 77, "ts": 1794038568.924, "level": "ok", "action": "auth.login", "message": "登录成功", "detail": "", "ip": "127.0.0.1"}
+{"id": 78, "ts": 1794038588.516, "level": "warn", "action": "auth.set", "message": "访问口令已修改，其他设备需用新口令重新登录", "detail": "", "ip": "127.0.0.1"}
+{"id": 79, "ts": 1794038588.81, "level": "warn", "action": "auth.fail", "message": "口令错误，登录被拒绝", "detail": "", "ip": "127.0.0.1"}
+{"id": 80, "ts": 1794038588.811, "level": "warn", "action": "http.403", "message": "POST /api/login → 403", "detail": "", "ip": "127.0.0.1"}
+{"id": 81, "ts": 1794038588.877, "level": "info", "action": "auth.set", "message": "已关闭口令登录，局域网内可直接访问", "detail": "", "ip": "127.0.0.1"}
+{"id": 82, "ts": 1794038589.042, "level": "warn", "action": "http.400", "message": "POST /api/security → 400", "detail": "", "ip": "127.0.0.1"}
+{"id": 83, "ts": 1794038604.244, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.10.0 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 84, "ts": 1794038620.32, "level": "warn", "action": "auth.set", "message": "已开启口令登录，局域网内其他设备需重新登录", "detail": "", "ip": "127.0.0.1"}
+{"id": 85, "ts": 1794038722.652, "level": "ok", "action": "auth.login", "message": "登录成功", "detail": "", "ip": "127.0.0.1"}
+{"id": 86, "ts": 1794038722.722, "level": "info", "action": "auth.set", "message": "已关闭口令登录，局域网内可直接访问", "detail": "", "ip": "127.0.0.1"}
+{"id": 87, "ts": 1794038733.347, "level": "warn", "action": "auth.set", "message": "已开启口令登录，局域网内其他设备需重新登录", "detail": "", "ip": "127.0.0.1"}
+{"id": 88, "ts": 1794038772.064, "level": "info", "action": "auth.set", "message": "已关闭口令登录，局域网内可直接访问", "detail": "", "ip": "127.0.0.1"}
+{"id": 89, "ts": 1794039075.502, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.11.0 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 90, "ts": 1794039105.726, "level": "warn", "action": "auth.set", "message": "已开启口令登录，局域网内其他设备需重新登录", "detail": "", "ip": "192.168.2.79"}
+{"id": 91, "ts": 1794039172.107, "level": "ok", "action": "auth.login", "message": "登录成功", "detail": "", "ip": "192.168.2.26"}
+{"id": 92, "ts": 1794039186.015, "level": "info", "action": "auth.set", "message": "已关闭口令登录，局域网内可直接访问", "detail": "", "ip": "192.168.2.26"}
+{"id": 93, "ts": 1794039221.319, "level": "info", "action": "auth.set", "message": "已关闭口令登录，局域网内可直接访问", "detail": "", "ip": "192.168.2.79"}
+{"id": 94, "ts": 1794039234.159, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 158 秒", "ip": ""}

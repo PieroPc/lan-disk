@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HTML 预览测试</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 36px; font-family: "Microsoft YaHei", system-ui, sans-serif;
+         background: radial-gradient(circle at 20% 10%, #1e293b, #0b1120); color: #e2e8f0; }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 12px;
+         background: rgba(99,102,241,.25); color: #a5b4fc; margin-bottom: 18px; }
+  .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+          border-radius: 14px; padding: 18px 20px; max-width: 460px; }
+  #out { color: #34d399; font-weight: 600; }
+  img { width: 100%; border-radius: 10px; margin-top: 14px; display: block; }
+</style>
+</head>
+<body>
+  <span class="tag">sandbox iframe</span>
+  <h1>HTML 也能在线看</h1>
+  <div class="card">
+    <p>这段样式来自文件内的 &lt;style&gt;。</p>
+    <p id="out">脚本尚未执行</p>
+    <img src="shot.jpg" alt="相对路径图片">
+  </div>
+  <script>
+    document.getElementById('out').textContent =
+      '脚本已执行 ✓ ' + new Date().toLocaleTimeString('zh-CN');
+  </script>
+</body>
+</html>

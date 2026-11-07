@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>拼音打字练习稿</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 24px 80px;
+    background: #f6f7f9;
+    color: #1f2328;
+    font-family: "Microsoft YaHei", "PingFang SC", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  header { margin-bottom: 34px; }
+  h1 {
+    font-size: 34px; font-weight: 800; margin: 0 0 10px;
+    letter-spacing: -0.5px; color: #10131a;
+  }
+  .sub { margin: 0; font-size: 15.5px; color: #6b7280; line-height: 1.7; }
+  .sub b { color: #2c6ef2; font-weight: 600; }
+
+  .card {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e7e9ef;
+    border-radius: 18px;
+    padding: 28px 30px 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 2px rgba(16,19,26,.04), 0 8px 24px rgba(16,19,26,.035);
+  }
+  .head { display: flex; align-items: flex-start; gap: 15px; padding-right: 76px; }
+  .num {
+    flex: none; width: 42px; height: 42px; border-radius: 12px;
+    background: #eef3fe; color: #2c6ef2;
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 19px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  h2 { font-size: 21px; font-weight: 700; margin: 1px 0 5px; color: #10131a; letter-spacing: .2px; }
+  .kicker { font-size: 13.5px; color: #8b93a1; }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 20px; }
+  .pill {
+    font-size: 12.5px; font-weight: 600; color: #4b5563;
+    background: #f3f4f7; border: 1px solid #e8eaef;
+    padding: 5px 11px; border-radius: 999px; letter-spacing: .2px;
+  }
+
+  .body { font-size: 19px; line-height: 1.95; color: #1f2328; }
+  .body p { margin: 0; }
+  .piece { margin-bottom: 20px; }
+  .piece:last-child { margin-bottom: 0; }
+  .src {
+    font-size: 12.5px; font-weight: 600; color: #8b93a1;
+    letter-spacing: .6px; margin-bottom: 7px;
+  }
+  .lines p { margin-bottom: 12px; }
+  .lines p:last-child { margin-bottom: 0; }
+
+  .drill { display: flex; flex-direction: column; gap: 6px; }
+  .row { display: grid; grid-template-columns: 52px 1fr; align-items: baseline; }
+  .sm {
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 12.5px; font-weight: 700; color: #6b7280;
+    letter-spacing: .3px;
+    background: #f1f3f7; border: 1px solid #e6e9ef;
+    border-radius: 6px; padding: 1px 7px;
+    justify-self: start; min-width: 28px; text-align: center;
+    line-height: 1.5;
+  }
+  .chars { font-size: 19.5px; letter-spacing: 0.06em; word-spacing: 0.1em; }
+
+  .note {
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px dashed #e7e9ef;
+    font-size: 14px; line-height: 1.85; color: #6b7280;
+  }
+
+  .copy {
+    position: absolute; top: 26px; right: 26px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    color: #2c6ef2; background: #f2f6ff;
+    border: 1px solid #d8e4fd; border-radius: 9px;
+    padding: 7px 15px; cursor: pointer; transition: all .15s;
+  }
+  .copy:hover { background: #e6efff; border-color: #b9d1fb; }
+  .copy.done { color: #0f9d58; background: #eefaf3; border-color: #c3ebd7; }
+
+  footer {
+    margin-top: 36px; padding: 24px 26px;
+    background: #10131a; border-radius: 16px;
+    color: #c9d1dc; font-size: 14px; line-height: 1.95;
+  }
+  footer b { color: #fff; }
+  footer span { color: #7d8899; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .copy { display: none; }
+    .card { box-shadow: none; break-inside: avoid; }
+    footer { background: #f3f4f7; color: #333; }
+    footer b { color: #000; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>拼音打字练习稿</h1>
+    <p class="sub">四组材料，从键位记忆走到经典篇章。<b>先准，再快</b>——每组打三遍：第一遍看稿，第二遍不看手，第三遍计时。</p>
+  </header>
+  
+    <section class="card">
+      <div class="head">
+        <div class="num">A</div>
+        <div class="titles">
+          <h2>按声母过一遍</h2>
+          <div class="kicker">手指先认识音，再谈速度</div>
+        </div>
+        <button class="copy" data-target="sA">复制</button>
+      </div>
+      <div class="pills"><span class="pill">192 字</span><span class="pill">约 6 分钟</span><span class="pill">目标 30 字/分</span></div>
+      <div class="body" id="sA"><div class="drill"><div class="row"><span class="sm">b</span><span class="chars">不 本 比 别 部 边 白 报 帮 表</span></div><div class="row"><span class="sm">p</span><span class="chars">平 盘 朋 批 片 排 怕 跑</span></div><div class="row"><span class="sm">m</span><span class="chars">们 没 吗 每 明 面 民 买 满</span></div><div class="row"><span class="sm">f</span><span class="chars">发 分 方 法 风 反 房 放</span></div><div class="row"><span class="sm">d</span><span class="chars">的 地 大 都 到 对 多 但 定 道</span></div><div class="row"><span class="sm">t</span><span class="chars">他 她 它 天 同 头 条 团 台</span></div><div class="row"><span class="sm">n</span><span class="chars">你 年 内 能 女 拿 南 农</span></div><div class="row"><span class="sm">l</span><span class="chars">了 来 里 老 力 两 论 路 类</span></div><div class="row"><span class="sm">g</span><span class="chars">个 国 过 给 高 各 关 感 改</span></div><div class="row"><span class="sm">k</span><span class="chars">可 看 开 口 快 空 科 苦</span></div><div class="row"><span class="sm">h</span><span class="chars">和 会 好 后 还 很 话 花 活</span></div><div class="row"><span class="sm">j</span><span class="chars">就 家 经 见 机 将 几 件 教</span></div><div class="row"><span class="sm">q</span><span class="chars">去 起 前 请 其 全 情 期 亲</span></div><div class="row"><span class="sm">x</span><span class="chars">下 小 想 行 学 新 相 心 先</span></div><div class="row"><span class="sm">zh</span><span class="chars">这 中 着 只 种 主 政 战 张</span></div><div class="row"><span class="sm">ch</span><span class="chars">出 成 产 长 场 车 程 处 城</span></div><div class="row"><span class="sm">sh</span><span class="chars">是 上 时 生 使 手 社 什</span></div><div class="row"><span class="sm">r</span><span class="chars">人 日 然 如 认 让 任</span></div><div class="row"><span class="sm">z</span><span class="chars">在 子 自 作 做 总 走 早</span></div><div class="row"><span class="sm">c</span><span class="chars">从 次 此 才 存 层</span></div><div class="row"><span class="sm">s</span><span class="chars">三 所 四 送 算 色</span></div><div class="row"><span class="sm">y</span><span class="chars">一 有 也 用 要 于 以 又</span></div><div class="row"><span class="sm">w</span><span class="chars">我 为 文 无 问 王 五</span></div></div></div>
+      <div class="note">同一行的字都从同一个起始键出发。不求快，只求手指记住「这个音在哪一排」。zh、ch、sh 三行是重点，打的时候在键上补一个 h。</div>
+    </section>
+    <section class="card">
+      <div class="head">
+        <div class="num">B</div>
+        <div class="titles">
+          <h2>绕口令</h2>
+          <div class="kicker">专治 zh / ch / sh、n / l、前后鼻音</div>
+        </div>
+        <button class="copy" data-target="sB">复制</button>
+      </div>
+      <div class="pills"><span class="pill">153 字</span><span class="pill">约 6 分钟</span><span class="pill">目标 26 字/分</span></div>
+      <div class="body" id="sB"><div class="lines"><p>四是四，十是十，十四是十四，四十是四十。谁能说准四十、十四、四十四，谁来试一试。</p><p>牛郎恋刘娘，刘娘念牛郎。牛郎年年恋刘娘，刘娘年年念牛郎。</p><p>黑化肥发灰，灰化肥发黑。黑化肥发灰会挥发，灰化肥挥发会发黑。</p><p>八百标兵奔北坡，北坡炮兵并排跑。炮兵怕把标兵碰，标兵怕碰炮兵炮。</p><p>石狮寺前有四十四个石狮子，寺前树上结了四十四个涩柿子。</p><p>红鲤鱼与绿鲤鱼与驴，绿鲤鱼与红鲤鱼与驴。</p></div></div>
+      <div class="note">绕口令不是比谁快，是暴露你哪个音打不准。打错别回删，先打完一条，看清是哪个音卡住，再重打一遍。</div>
+    </section>
+    <section class="card">
+      <div class="head">
+        <div class="num">C</div>
+        <div class="titles">
+          <h2>白话短文</h2>
+          <div class="kicker">常用字密度最高，最像日常打字</div>
+        </div>
+        <button class="copy" data-target="sC">复制</button>
+      </div>
+      <div class="pills"><span class="pill">约 254 字</span><span class="pill">约 6 分钟</span><span class="pill">目标 45 字/分</span></div>
+      <div class="body" id="sC"><div class="piece"><div class="src">朱自清《春》</div><p>盼望着，盼望着，东风来了，春天的脚步近了。一切都像刚睡醒的样子，欣欣然张开了眼。山朗润起来了，水涨起来了，太阳的脸红起来了。小草偷偷地从土里钻出来，嫩嫩的，绿绿的。园子里，田野里，瞧去，一大片一大片满是的。</p></div><div class="piece"><div class="src">老舍《济南的冬天》</div><p>对于一个在北平住惯的人，像我，冬天要是不刮风，便觉得是奇迹；济南的冬天是没有风声的。对于一个刚由伦敦回来的人，像我，冬天要能看得见日光，便觉得是怪事；济南的冬天是响晴的。可是，在北中国的冬天，而能有温晴的天气，济南真得算个宝地。</p></div><div class="piece"><div class="src">朱自清《背影》</div><p>我与父亲不相见已二年余了，我最不能忘记的是他的背影。那年冬天，祖母死了，父亲的差使也交卸了，正是祸不单行的日子。我从北京到徐州，打算跟着父亲奔丧回家。</p></div></div>
+      <div class="note">这两段几乎不含生僻字，是练「连续输出」最好的材料。目标是中间不停顿、不回头看候选框，一句话打完再抬头。</div>
+    </section>
+    <section class="card">
+      <div class="head">
+        <div class="num">D</div>
+        <div class="titles">
+          <h2>经典篇章</h2>
+          <div class="kicker">同音字密集，专练选词</div>
+        </div>
+        <button class="copy" data-target="sD">复制</button>
+      </div>
+      <div class="pills"><span class="pill">约 144 字</span><span class="pill">约 7 分钟</span><span class="pill">目标 20 字/分</span></div>
+      <div class="body" id="sD"><div class="piece"><div class="src">《声律启蒙》一东</div><p>云对雨，雪对风，晚照对晴空。来鸿对去燕，宿鸟对鸣虫。三尺剑，六钧弓，岭北对江东。人间清暑殿，天上广寒宫。两岸晓烟杨柳绿，一园春雨杏花红。</p></div><div class="piece"><div class="src">《千字文》开篇</div><p>天地玄黄，宇宙洪荒。日月盈昃，辰宿列张。寒来暑往，秋收冬藏。闰余成岁，律吕调阳。云腾致雨，露结为霜。金生丽水，玉出昆冈。剑号巨阙，珠称夜光。果珍李柰，菜重芥姜。海咸河淡，鳞潜羽翔。龙师火帝，鸟官人皇。始制文字，乃服衣裳。</p></div></div>
+      <div class="note">生僻字多，速度会掉下来，这是正常的——这一组练的不是速度，是「候选框里第几个」。昃、宿、闰、柰这类字，打过一次就记住了。</div>
+    </section>
+  <footer>
+    <b>怎么用：</b>一天只练一组，20 分钟以内。打错不要按退格，先打完这一句，回头再改——退格是速度最大的敌人。<br>
+    <span>速度参考：生手 20–30 字/分 · 熟练 60–80 字/分 · 盲打 100 字/分以上。连续三天打同一组，速度会明显跳一次。</span>
+  </footer>
+</div>
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var box = document.getElementById(btn.dataset.target);
+    var text = box.innerText.replace(/\n{2,}/g, '\n').trim();
+    var done = function () {
+      var old = btn.textContent;
+      btn.textContent = '已复制';
+      btn.classList.add('done');
+      setTimeout(function () { btn.textContent = old; btn.classList.remove('done'); }, 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    } else { fallback(); }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  });
+});
+</script>
+</body>
+</html>

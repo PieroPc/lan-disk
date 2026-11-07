@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4f6ef7">
+<title>局域网云盘</title>
+<link rel="stylesheet" href="/static/style.css?v=__V__">
+</head>
+<body>
+
+<!-- 登录 -->
+<div class="login-mask hidden" id="loginMask">
+  <form class="login-card" id="loginForm">
+    <div class="login-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A6 6 0 0 0 6.2 9.5 4 4 0 0 0 6.5 19h11Z"/></svg></div>
+    <h1>局域网云盘</h1>
+    <p>请输入访问口令</p>
+    <input type="password" id="loginPwd" placeholder="访问口令" autocomplete="current-password" autofocus>
+    <button type="submit">进入云盘</button>
+    <div class="login-err" id="loginErr"></div>
+  </form>
+</div>
+
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A6 6 0 0 0 6.2 9.5 4 4 0 0 0 6.5 19h11Z"/></svg>
+      </div>
+      <div class="brand-text">
+        <strong>局域网云盘</strong>
+        <span id="brandHost">LAN Disk</span>
+      </div>
+    </div>
+
+    <button class="btn-primary upload-main" id="btnUploadMain">
+      <svg class="ico-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+      <svg class="ico-note hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span id="btnUploadLabel">上传文件</span>
+    </button>
+
+    <button class="btn-secondary only-mobile-flex" id="btnNewFolderM">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 8v8M8 12h8"/><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+      新建文件夹
+    </button>
+
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-view="browse">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+        全部文件
+      </button>
+      <button class="nav-item" data-view="recent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+        最近使用
+      </button>
+      <button class="nav-item" data-view="image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 4.5-4.5L13 17l3-3 4 4"/></svg>
+        图片
+      </button>
+      <button class="nav-item" data-view="video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg>
+        视频
+      </button>
+      <button class="nav-item" data-view="audio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>
+        音乐
+      </button>
+      <button class="nav-item" data-view="doc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/></svg>
+        文档
+      </button>
+      <button class="nav-item" data-view="notes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H17a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6.5A1.5 1.5 0 0 1 5 19.5Z"/><path d="M9 7.5h6M9 11h6M9 14.5h4"/></svg>
+        笔记
+      </button>
+      <button class="nav-item" data-view="shares">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+        我的分享
+        <span class="side-badge" id="sideShareBadge"></span>
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="storage-card">
+        <div class="storage-top">
+          <span>存储空间</span>
+          <span id="storageText">—</span>
+        </div>
+        <div class="meter"><i id="storageBar"></i></div>
+        <div class="storage-sub" id="storageSub">磁盘剩余 —</div>
+      </div>
+      <button class="nav-item side-settings" id="btnSettings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 14.6a1.5 1.5 0 0 0 .3 1.66l.05.05a1.9 1.9 0 1 1-2.69 2.69l-.05-.05a1.5 1.5 0 0 0-1.66-.3 1.5 1.5 0 0 0-.9 1.37V20a1.9 1.9 0 1 1-3.8 0v-.08a1.5 1.5 0 0 0-.98-1.37 1.5 1.5 0 0 0-1.66.3l-.05.05a1.9 1.9 0 1 1-2.69-2.69l.05-.05a1.5 1.5 0 0 0 .3-1.66 1.5 1.5 0 0 0-1.37-.9H4a1.9 1.9 0 1 1 0-3.8h.08a1.5 1.5 0 0 0 1.37-.98 1.5 1.5 0 0 0-.3-1.66l-.05-.05a1.9 1.9 0 1 1 2.69-2.69l.05.05a1.5 1.5 0 0 0 1.66.3H9.6a1.5 1.5 0 0 0 .9-1.37V4a1.9 1.9 0 1 1 3.8 0v.08a1.5 1.5 0 0 0 .9 1.37 1.5 1.5 0 0 0 1.66-.3l.05-.05a1.9 1.9 0 1 1 2.69 2.69l-.05.05a1.5 1.5 0 0 0-.3 1.66v.08a1.5 1.5 0 0 0 1.37.9H20a1.9 1.9 0 1 1 0 3.8h-.08a1.5 1.5 0 0 0-1.37.9Z"/></svg>
+        系统设置
+        <span class="side-badge" id="sideLogBadge"></span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn only-mobile" id="btnMenu" title="菜单">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="crumbs" id="crumbs"></nav>
+
+      <div class="topbar-tools">
+        <div class="search" id="searchBox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="searchInput" type="text" placeholder="搜索文件…" autocomplete="off">
+          <button class="search-clear hidden" id="searchClear" title="清空">×</button>
+        </div>
+        <button class="icon-btn" id="btnNewFolder" title="新建文件夹">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 8v8M8 12h8"/><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+        </button>
+        <button class="icon-btn" id="btnUploadSm" title="上传文件">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        </button>
+        <div class="seg" id="viewToggle">
+          <button data-mode="grid" class="active" title="网格视图">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          </button>
+          <button data-mode="list" title="列表视图">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+        <button class="icon-btn" id="btnTheme" title="切换主题">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="subbar" id="subbar">
+      <div class="subbar-left" id="subbarLeft"></div>
+      <div class="subbar-right">
+        <label class="sort-wrap">
+          排序
+          <select id="sortSelect">
+            <option value="name">名称</option>
+            <option value="mtime">修改时间</option>
+            <option value="size">大小</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <section class="content" id="content">
+      <div class="filearea grid" id="filearea"></div>
+      <div class="empty hidden" id="emptyState">
+        <div class="empty-art">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+        </div>
+        <h3 id="emptyTitle">这里还没有文件</h3>
+        <p id="emptyDesc">把文件拖进窗口，或点击右上角上传</p>
+      </div>
+      <div class="skeleton hidden" id="skeleton">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <!-- 我的分享 -->
+      <div class="shares hidden" id="sharesView">
+        <div class="shares-head">
+          <div class="shares-head-text">
+            <h2>分享记录 <em id="sharesCount"></em></h2>
+            <p id="sharesSub">同一 WiFi 下，拿到链接的人就能打开</p>
+          </div>
+          <button class="btn-ghost" id="sharesRefresh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.6"/><path d="M20 5v6h-6"/></svg>
+            刷新
+          </button>
+        </div>
+        <div class="share-cards" id="sharesList"></div>
+        <div class="shares-empty hidden" id="sharesEmpty">
+          <div class="empty-art">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+          </div>
+          <h3>还没有分享过东西</h3>
+          <p>在文件卡片右上角点分享图标，就会生成一条链接</p>
+        </div>
+      </div>
+
+      <!-- 网络笔记 -->
+      <div class="notes hidden" id="notesView" data-pane="split">
+        <aside class="note-side">
+          <div class="note-side-head">
+            <span><b id="noteCount">0</b> 篇笔记</span>
+            <button class="note-new" id="noteNew" title="新建笔记">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              新建
+            </button>
+          </div>
+          <div class="note-list" id="noteList"></div>
+        </aside>
+
+        <section class="note-main hidden" id="noteMain">
+          <div class="note-head">
+            <button class="icon-btn only-mobile" id="noteBack" title="返回列表">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 6-6 6 6 6"/></svg>
+            </button>
+            <input class="note-title" id="noteTitle" type="text" placeholder="无标题笔记" autocomplete="off">
+            <div class="note-tools">
+              <span class="note-status" id="noteStatus"></span>
+              <button class="icon-btn" id="notePin" title="置顶">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l-1 5 3 3v1H7v-1l3-3-1-5Z"/><path d="M12 13v7"/></svg>
+              </button>
+              <button class="icon-btn" id="notePane" title="切换编辑/预览">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg>
+              </button>
+              <button class="icon-btn" id="noteSave" title="保存">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5Z"/><path d="M9 4v5h6V4M8.5 14h7"/></svg>
+              </button>
+              <button class="icon-btn" id="noteExport" title="导出为 Markdown">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg>
+              </button>
+              <button class="icon-btn" id="noteDelete" title="删除笔记">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="note-panes">
+            <div class="note-edit">
+              <div class="note-md-tools" id="noteMdTools">
+                <button data-md="h1" title="一级标题">H1</button>
+                <button data-md="h2" title="二级标题">H2</button>
+                <button data-md="h3" title="三级标题">H3</button>
+                <i class="sep"></i>
+                <button data-md="bold" title="加粗 Ctrl+B"><b>B</b></button>
+                <button data-md="italic" title="斜体 Ctrl+I"><em>I</em></button>
+                <button data-md="code" title="行内代码"><span style="font-family:Consolas,monospace">&lt;/&gt;</span></button>
+                <i class="sep"></i>
+                <button data-md="ul" title="无序列表">•—</button>
+                <button data-md="ol" title="有序列表">1.</button>
+                <button data-md="task" title="待办清单">☑</button>
+                <button data-md="quote" title="引用">”</button>
+                <i class="sep"></i>
+                <button data-md="link" title="链接 Ctrl+K">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+                </button>
+                <button data-md="table" title="表格">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 15h18M9 4v16M15 4v16"/></svg>
+                </button>
+                <button data-md="image" title="插入图片">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 4.5-4.5L13 17l3-3 4 4"/></svg>
+                </button>
+              </div>
+              <textarea id="noteInput" spellcheck="false" placeholder="用 Markdown 记点什么…&#10;&#10;# 标题&#10;- 支持列表、表格、代码块&#10;- 图片可以直接粘贴或拖动进来&#10;- 停下来就会自动保存"></textarea>
+            </div>
+            <div class="note-preview md-body" id="notePreview"></div>
+          </div>
+        </section>
+
+        <div class="note-blank hidden" id="noteBlank">
+          <div class="blank-art">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H17a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6.5A1.5 1.5 0 0 1 5 19.5Z"/><path d="M9 7.5h6M9 11h6M9 14.5h4"/></svg>
+          </div>
+          <h3>还没有笔记</h3>
+          <p>Markdown 笔记存在云盘服务器上，局域网里任何设备打开都能接着写。</p>
+          <button class="btn-primary" id="noteBlankNew">写第一篇笔记</button>
+        </div>
+      </div>
+
+      <!-- 系统设置 -->
+      <div class="settings hidden" id="settingsView" data-tab="about">
+        <div class="set-head">
+          <div class="set-title">
+            <h2>系统设置</h2>
+            <p>关于这个云盘的一切，以及它做过些什么。</p>
+          </div>
+          <div class="set-tabs" id="setTabs">
+            <button data-tab="about" class="active">关于我们</button>
+            <button data-tab="logs">系统日志</button>
+            <button data-tab="security">登录安全</button>
+          </div>
+        </div>
+
+        <div class="set-body" id="setBody">
+          <!-- 关于我们 -->
+          <section class="set-pane" id="paneAbout">
+            <div class="about-hero">
+              <div class="about-logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A6 6 0 0 0 6.2 9.5 4 4 0 0 0 6.5 19h11Z"/></svg>
+              </div>
+              <div class="about-meta">
+                <h3>局域网云盘 <span class="about-ver" id="aboutVer">v—</span></h3>
+                <p id="aboutTagline">正在读取运行信息…</p>
+                <div class="about-tags">
+                  <span>FastAPI</span><span>原生 HTML / CSS / JS</span><span>零第三方解析</span><span>离线可用</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="about-grid">
+              <div class="about-card">
+                <h4>运行信息</h4>
+                <dl class="kv-list" id="aboutRun">
+                  <div class="kv"><dt>服务地址</dt><dd>—</dd></div>
+                </dl>
+              </div>
+
+              <div class="about-card">
+                <h4>运行环境</h4>
+                <dl class="kv-list" id="aboutEnv">
+                  <div class="kv"><dt>Python</dt><dd>—</dd></div>
+                </dl>
+              </div>
+
+              <div class="about-card span-2">
+                <h4>内容统计</h4>
+                <div class="stat-grid" id="aboutStats"></div>
+                <div class="disk-line" id="aboutDisk"></div>
+              </div>
+
+              <div class="about-card">
+                <h4>能做什么</h4>
+                <ul class="feat-list">
+                  <li><i></i>上传、下载、多选打包下载</li>
+                  <li><i></i>图片、视频、音乐、PDF 即点即看</li>
+                  <li><i></i>Word / Excel / PPT 在线解析，不用装 Office</li>
+                  <li><i></i>Markdown 笔记，自动保存、可贴图</li>
+                  <li><i></i>同一 WiFi 下手机、平板、电脑同时用</li>
+                </ul>
+              </div>
+
+              <div class="about-card">
+                <h4>快捷键</h4>
+                <ul class="key-list">
+                  <li><kbd>/</kbd><span>聚焦搜索框</span></li>
+                  <li><kbd>Ctrl</kbd><kbd>S</kbd><span>保存笔记</span></li>
+                  <li><kbd>Ctrl</kbd><kbd>B</kbd><span>笔记加粗</span></li>
+                  <li><kbd>Ctrl</kbd><kbd>V</kbd><span>粘贴图片到笔记</span></li>
+                  <li><kbd>Esc</kbd><span>关闭弹窗 / 退出预览</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="about-foot">
+              <span>数据只存在这台电脑上，不上传任何服务器。</span>
+              <span id="aboutBuild">—</span>
+            </div>
+          </section>
+
+          <!-- 系统日志 -->
+          <section class="set-pane hidden" id="paneLogs">
+            <div class="log-bar">
+              <div class="log-filters" id="logFilters">
+                <button data-level="" class="active">全部 <b data-n="all">0</b></button>
+                <button data-level="info">信息 <b data-n="info">0</b></button>
+                <button data-level="ok">成功 <b data-n="ok">0</b></button>
+                <button data-level="warn">警告 <b data-n="warn">0</b></button>
+                <button data-level="error">错误 <b data-n="error">0</b></button>
+              </div>
+              <div class="log-tools">
+                <div class="log-search">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                  <input id="logSearch" type="text" placeholder="搜索日志…" autocomplete="off">
+                </div>
+                <button class="icon-btn" id="logRefresh" title="刷新">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>
+                </button>
+                <button class="mini-btn" id="logExport">导出</button>
+                <button class="mini-btn danger" id="logClear">清空</button>
+              </div>
+            </div>
+
+            <div class="log-hint" id="logHint"></div>
+            <div class="log-list" id="logList"></div>
+            <div class="log-more hidden" id="logMore">
+              <button id="logMoreBtn">加载更早的记录</button>
+            </div>
+          </section>
+
+          <!-- 登录安全 -->
+          <section class="set-pane hidden" id="paneSecurity">
+            <div class="sec-card">
+              <div class="sec-row">
+                <div class="sec-info">
+                  <h3>需要密码登录</h3>
+                  <p id="secState">加载中…</p>
+                </div>
+                <label class="switch" title="开关密码登录">
+                  <input type="checkbox" id="secToggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="sec-form" id="secForm">
+                <label class="sec-label" for="secPwd" id="secLabel">访问口令</label>
+                <input type="password" id="secPwd" placeholder="设置访问口令" autocomplete="new-password" maxlength="128">
+                <p class="sec-hint" id="secHint">开启或修改口令后，局域网内其他设备需要用新口令重新登录；当前浏览器保持登录，不用重输。</p>
+                <div class="sec-actions">
+                  <button class="btn-primary" id="secSave">保存</button>
+                  <button class="btn-ghost hidden" id="secLogout">退出本机登录</button>
+                </div>
+              </div>
+            </div>
+            <div class="sec-note">
+              <p>提示：口令保存在本机 <code>security.json</code>，重启后依然生效。忘记口令时，删除该文件并重启云盘即可恢复无密码访问。</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <footer class="statusbar">
+      <span id="statusCount">—</span>
+      <div class="sel-actions hidden" id="selActions">
+        <span id="selCount"></span>
+        <button class="mini-btn" id="selShare"><span class="only-wide">分享链接</span><span class="only-narrow">分享</span></button>
+        <button class="mini-btn" id="selDownload">打包下载</button>
+        <button class="mini-btn" id="selMove">移动到…</button>
+        <button class="mini-btn danger" id="selDelete">删除</button>
+        <button class="mini-btn ghost" id="selClear"><span class="only-wide">取消选择</span><span class="only-narrow">取消</span></button>
+      </div>
+      <span class="status-right" id="statusRight"></span>
+    </footer>
+  </main>
+</div>
+
+<div class="drop-mask" id="dropMask">
+  <div class="drop-inner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+    <strong id="dropText">松手上传到当前目录</strong>
+  </div>
+</div>
+
+<div class="upload-panel hidden" id="uploadPanel">
+  <div class="upload-head">
+    <span id="uploadTitle">正在上传</span>
+    <button id="uploadClose" class="link-btn">收起</button>
+  </div>
+  <div class="upload-list" id="uploadList"></div>
+</div>
+
+<!-- 预览 -->
+<div class="modal hidden" id="previewModal">
+  <div class="modal-backdrop" data-close></div>
+  <div class="preview-box">
+    <div class="preview-head">
+      <div class="preview-title">
+        <span id="previewName">文件名</span>
+        <small id="previewMeta"></small>
+      </div>
+      <div class="preview-tools">
+        <a class="icon-btn" id="previewOpenNew" title="在新窗口打开" target="_blank" rel="noopener" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
+        </a>
+        <button class="icon-btn" id="previewShare" title="分享链接">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+        </button>
+        <a class="icon-btn" id="previewDownload" title="下载">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0 5-5m-5 5-5-5"/><path d="M4 20h16"/></svg>
+        </a>
+        <button class="icon-btn" id="previewEdit" title="编辑" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16Z"/></svg>
+        </button>
+        <button class="icon-btn" data-close title="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="preview-body" id="previewBody"></div>
+  </div>
+</div>
+
+<!-- 输入对话框 -->
+<div class="modal hidden" id="promptModal">
+  <div class="modal-backdrop" data-close></div>
+  <form class="dialog" id="promptForm">
+    <h3 id="promptTitle">重命名</h3>
+    <input type="text" id="promptInput" autocomplete="off">
+    <div class="dialog-actions">
+      <button type="button" class="btn-ghost" data-close>取消</button>
+      <button type="submit" class="btn-primary">确定</button>
+    </div>
+  </form>
+</div>
+
+<!-- 移动到文件夹 -->
+<div class="modal hidden" id="moveModal">
+  <div class="modal-backdrop" data-close></div>
+  <div class="dialog dialog-move">
+    <h3>移动到</h3>
+    <p class="dialog-text" id="moveSub">选择目标文件夹</p>
+    <div class="tree" id="moveTree"></div>
+    <div class="move-dest">目标位置：<strong id="moveDest">全部文件（根目录）</strong></div>
+    <div class="dialog-actions">
+      <button type="button" class="btn-ghost" data-close>取消</button>
+      <button type="button" class="btn-primary" id="moveOk">移动到这里</button>
+    </div>
+  </div>
+</div>
+
+<!-- 分享链接 -->
+<div class="modal hidden" id="shareModal">
+  <div class="modal-backdrop" data-close></div>
+  <div class="dialog dialog-share">
+    <h3 id="shareTitle">分享链接</h3>
+    <p class="dialog-text" id="shareSub">同一 WiFi 下，任何人打开这个链接都能访问</p>
+
+    <div class="share-link-row">
+      <input type="text" id="shareLink" readonly spellcheck="false" autocomplete="off">
+      <button class="btn-primary" id="shareCopy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+        复制
+      </button>
+    </div>
+
+    <div class="share-opts">
+      <label class="share-field">
+        <span>有效期</span>
+        <select id="shareExpire">
+          <option value="1">1 天</option>
+          <option value="7" selected>7 天</option>
+          <option value="30">30 天</option>
+          <option value="0">永久</option>
+        </select>
+      </label>
+      <label class="share-check">
+        <input type="checkbox" id="shareDirect">
+        <span>打开就直接下载</span>
+      </label>
+    </div>
+
+    <div class="share-qr" id="shareQr">
+      <img id="shareQrImg" alt="分享二维码">
+      <div class="share-qr-text">
+        <strong>手机扫码打开</strong>
+        <small>手机需和这台电脑连同一个 WiFi</small>
+      </div>
+    </div>
+
+    <div class="share-foot">
+      <button class="btn-ghost" id="shareOpenNew">在新窗口打开</button>
+      <div class="share-foot-right">
+        <button class="btn-ghost" data-close>关闭</button>
+        <button class="btn-ghost" id="shareRevoke">取消分享</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 确认对话框 -->
+<div class="modal hidden" id="confirmModal">
+  <div class="modal-backdrop" data-close></div>
+  <div class="dialog">
+    <h3 id="confirmTitle">确认</h3>
+    <p id="confirmText" class="dialog-text"></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn-ghost" data-close>取消</button>
+      <button type="button" class="btn-danger" id="confirmOk">删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- 文件备注 -->
+<div class="modal hidden" id="remarkModal">
+  <div class="modal-backdrop" data-close></div>
+  <div class="dialog">
+    <h3>备注 <em class="dialog-em" id="remarkName"></em></h3>
+    <p class="dialog-text">写点说明，比如用途、来自哪里；文件移动、重命名时备注会跟着走。</p>
+    <textarea id="remarkText" rows="4" maxlength="2000" placeholder="例如：这是给客户 V2 版的最终稿，别删"></textarea>
+    <div class="dialog-actions">
+      <button type="button" class="btn-ghost" data-close>取消</button>
+      <button type="button" class="btn-ghost" id="remarkClear">清除备注</button>
+      <button type="button" class="btn-primary" id="remarkSave">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<input type="file" id="filePicker" multiple hidden>
+<input type="file" id="noteImagePicker" accept="image/*" multiple hidden>
+
+<script src="/static/app.js?v=__V__"></script>
+</body>
+</html>
