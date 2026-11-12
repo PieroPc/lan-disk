@@ -2,10 +2,10 @@
 局域网云盘 · FastAPI 后端
 
 启动： python main.py
-访问： http://<本机IP>:8088
+访问： http://<本机IP>:8101
 
 环境变量（可选）：
-  LAN_DISK_PORT      端口，默认 8088
+  LAN_DISK_PORT      端口，默认 8101
   LAN_DISK_PASSWORD  访问口令，设置后需要登录
   LAN_DISK_ROOT      存储根目录，默认 ./storage
   LAN_DISK_NOTES     笔记目录，默认 ./notes
@@ -48,6 +48,7 @@ import archives
 import audiotag
 import journal
 import notes
+import ocr
 import office
 import remarks
 import shares
@@ -70,9 +71,40 @@ STORE_RAW = _arg("--root", "LAN_DISK_ROOT", "")
 STORAGE = Path(STORE_RAW).expanduser().resolve() if STORE_RAW else (BASE_DIR / "storage")
 STORAGE.mkdir(parents=True, exist_ok=True)
 
-PORT = int(_arg("--port", "LAN_DISK_PORT", "8088") or 8088)
+PORT = int(_arg("--port", "LAN_DISK_PORT", "8101") or 8101)
 PASSWORD = _arg("--password", "LAN_DISK_PASSWORD", "").strip()
-SECURITY_FILE = BASE_DIR / "security.json"
+
+# 运行时数据（口令/分享/备注/日志）统一放在 data/，目录更整洁。
+# 老版本把这几个文件放在程序根目录，启动时自动搬过来，数据无损。
+DATA_DIR = BASE_DIR / "data"
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _migrate(name: str):
+    old = BASE_DIR / name
+    new = DATA_DIR / name
+    if not old.exists():
+        return
+    if not new.exists():
+        try:
+            os.replace(old, new)
+        except OSError:
+            pass
+        return
+    # 新旧都存在（迁移后旧版服务又写过一次）：取修改时间更新的一份，避免丢数据
+    try:
+        if old.stat().st_mtime > new.stat().st_mtime:
+            os.replace(old, new)
+    except OSError:
+        pass
+
+
+_migrate("security.json")
+_migrate("shares.json")
+_migrate("remarks.json")
+_migrate("logs")
+
+SECURITY_FILE = DATA_DIR / "security.json"
 
 
 def _load_security():
@@ -93,14 +125,14 @@ NOTES_RAW = _arg("--notes", "LAN_DISK_NOTES", "")
 NOTES_DIR = Path(NOTES_RAW).expanduser().resolve() if NOTES_RAW else (BASE_DIR / "notes")
 notes_store = notes.Store(NOTES_DIR)
 
-SHARES = shares.Store(BASE_DIR / "shares.json")
-REMARKS = remarks.Remarks(BASE_DIR / "remarks.json")
+SHARES = shares.Store(DATA_DIR / "shares.json")
+REMARKS = remarks.Remarks(DATA_DIR / "remarks.json")
 
 APP_NAME = "局域网云盘"
-APP_VERSION = "1.11.0"
+APP_VERSION = "1.13.1"
 STARTED_AT = time.time()
 
-activity = journal.Journal(BASE_DIR / "logs")
+activity = journal.Journal(DATA_DIR / "logs")
 activity.record("system.boot", "ok", f"{APP_NAME} v{APP_VERSION} 已启动",
                 detail=f"端口 {PORT} · 存储 {STORAGE}")
 
@@ -419,24 +451,44 @@ async def list_dir(request: Request, path: str = "", sort: str = "name", order: 
 
 @app.get("/api/search")
 async def search(request: Request, q: str = "", limit: int = 300):
+    """全局搜索：匹配文件/文件夹名 + 备注内容。"""
     require_auth(request)
     q = (q or "").strip().lower()
     if not q:
         return {"items": []}
-    results = []
+    results, seen = [], set()
+
+    def add(p: Path) -> None:
+        if len(results) >= limit:
+            return
+        key = rel_of(p)
+        if key in seen:
+            return
+        try:
+            results.append(item_of(p))
+            seen.add(key)
+        except OSError:
+            pass
+
     start = time.time()
     for root, dirs, files in os.walk(STORAGE):
         dirs[:] = [d for d in dirs if not d.startswith(".")]
         for name in dirs + files:
             if q in name.lower():
-                try:
-                    results.append(item_of(Path(root) / name))
-                except OSError:
-                    pass
+                add(Path(root) / name)
                 if len(results) >= limit:
                     return {"items": results, "truncated": True}
         if time.time() - start > 8:
             return {"items": results, "truncated": True}
+
+    # 备注内容也参与搜索（文件名没命中、备注命中的文件）
+    for rel_path, rec in list(REMARKS.data.items()):
+        if q in str(rec.get("text", "")).lower():
+            p = STORAGE / rel_path
+            if p.exists():
+                add(p)
+            if len(results) >= limit:
+                return {"items": results, "truncated": True}
     return {"items": results, "truncated": False}
 
 
@@ -1206,6 +1258,134 @@ async def set_remark(request: Request, payload: dict):
         f"{'备注' if rec else '清除备注'}「{target.name}」",
         detail=(rec["text"][:60] + "…" if rec and len(rec["text"]) > 60 else (rec["text"] if rec else "")))
     return {"ok": True, "remark": rec["text"] if rec else ""}
+
+
+# ---------------------------------------------------------------- 相册同步
+
+ALBUM_DIR_NAME = "相册备份"
+ALBUM_HASH_CACHE = DATA_DIR / "album_hashes.json"
+
+
+def _album_hashes(root: Path) -> dict:
+    """相册备份目录内所有文件的 sha256，带缓存（按 路径+大小+mtime 失效）。"""
+    try:
+        cache = json.loads(ALBUM_HASH_CACHE.read_text("utf-8")) if ALBUM_HASH_CACHE.is_file() else {}
+        if not isinstance(cache, dict):
+            cache = {}
+    except (OSError, ValueError):
+        cache = {}
+    alive = set()
+    dirty = False
+    for p in root.rglob("*"):
+        if not p.is_file():
+            continue
+        try:
+            st = p.stat()
+        except OSError:
+            continue
+        key = p.relative_to(root).as_posix()
+        alive.add(key)
+        c = cache.get(key)
+        if c and c.get("size") == st.st_size and abs(c.get("mtime", -1) - st.st_mtime) < 1:
+            continue
+        h = hashlib.sha256()
+        try:
+            with open(p, "rb") as f:
+                for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                    h.update(chunk)
+        except OSError:
+            continue
+        cache[key] = {"size": st.st_size, "mtime": st.st_mtime, "sha": h.hexdigest()}
+        dirty = True
+    gone = set(cache) - alive
+    if gone:
+        for k in gone:
+            cache.pop(k, None)
+        dirty = True
+    if dirty:
+        tmp = ALBUM_HASH_CACHE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(cache, ensure_ascii=False), "utf-8")
+        os.replace(tmp, ALBUM_HASH_CACHE)
+    return cache
+
+
+@app.get("/api/album/known")
+async def album_known(request: Request):
+    """列出已备份到相册备份目录的所有照片/视频（名称+大小+内容哈希），供前端去重。"""
+    require_auth(request)
+    known = []
+    root = STORAGE / ALBUM_DIR_NAME
+    root.mkdir(exist_ok=True)          # 准备同步时顺手确保目录存在
+    hashes = _album_hashes(root) if root.is_dir() else {}
+    for key, meta in hashes.items():
+        known.append({"name": key.rsplit("/", 1)[-1], "size": meta["size"], "sha": meta["sha"]})
+    return {"dir": ALBUM_DIR_NAME, "known": known}
+
+
+# ---------------------------------------------------------------- 微信 OCR（本地引擎）
+
+@app.get("/api/ocr/config")
+async def ocr_config_get(request: Request):
+    """检测本机微信自带的 OCR 引擎；返回 {found, ocr_dll, wechat_dir, manual}。"""
+    require_auth(request)
+    return ocr.detect()
+
+
+@app.post("/api/ocr/config")
+async def ocr_config_set(request: Request, payload: dict):
+    """手动指定 OCR 引擎路径（两项都留空 = 清除手动配置、恢复自动检测）。"""
+    require_auth(request)
+    ocr_dll = str(payload.get("ocr_dll", "")).strip()
+    wechat_dir = str(payload.get("wechat_dir", "")).strip()
+    if not ocr_dll and not wechat_dir:
+        ocr.clear()
+        log(request, "ocr", "ok", "清除 OCR 手动路径，恢复自动检测")
+        return {"ok": True, "cleared": True}
+    if ocr_dll and not Path(ocr_dll).is_file():
+        raise HTTPException(status_code=400, detail="wxocr.dll 路径不存在")
+    if wechat_dir and not (Path(wechat_dir) / "mmmojo_64.dll").is_file():
+        raise HTTPException(status_code=400, detail="该目录下找不到 mmmojo_64.dll")
+    ocr.save({"ocr_dll": ocr_dll, "wechat_dir": wechat_dir})
+    log(request, "ocr", "ok", "保存 OCR 引擎手动路径")
+    return {"ok": True, "cleared": False}
+
+
+@app.post("/api/ocr")
+async def ocr_run(request: Request, payload: dict):
+    """识别图片文字（微信 OCR），结果追加写入该文件的备注。"""
+    require_auth(request)
+    target = resolve(str(payload.get("path", "")))
+    if not target.is_file():
+        raise HTTPException(status_code=404, detail="文件不存在")
+    try:
+        text = ocr.recognize(target)
+    except ocr.OcrError as e:
+        log(request, "ocr", "fail", f"识别「{target.name}」失败：{e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        log(request, "ocr", "fail", f"识别「{target.name}」异常：{e}")
+        raise HTTPException(status_code=400, detail=f"识别失败：{e}")
+
+    rel = rel_of(target)
+    old = REMARKS.get(rel)
+    stamp = time.strftime("%Y-%m-%d %H:%M")
+    block = f"【OCR {stamp}】{text}"
+    dedup = False
+    if old:
+        # 与上一次识别结果相同时不再重复追加，只刷新那一块的时间戳
+        parts = old.rsplit("【OCR ", 1)
+        last = parts[1] if len(parts) == 2 else ""
+        last_text = last.split("】", 1)[1] if "】" in last else ""
+        if last_text.strip() == text.strip():
+            new = parts[0] + block
+            dedup = True
+        else:
+            new = old + "\n\n" + block
+    else:
+        new = block
+    REMARKS.set(rel, new)
+    log(request, "ocr", "ok", f"OCR「{target.name}」，{len(text)} 字已写入备注" + ("（与上次相同，未重复）" if dedup else ""))
+    return {"ok": True, "text": text, "remark": new, "dedup": dedup}
 
 
 # ---------------------------------------------------------------- 音频信息

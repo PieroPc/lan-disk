@@ -22,7 +22,7 @@ if errorlevel 1 (
 REM 如需访问口令，取消下面这行的注释并改成自己的密码
 REM set LAN_DISK_PASSWORD=123456
 
-REM 如需换端口（默认 8088），取消下面这行的注释
+REM 如需换端口（默认 8101），取消下面这行的注释
 REM set LAN_DISK_PORT=9000
 
 python main.py

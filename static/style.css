@@ -77,11 +77,11 @@ svg { width: 18px; height: 18px; flex: none; }
 .brand { display: flex; align-items: center; gap: 10px; padding: 2px 6px 0; }
 .brand-icon {
   width: 36px; height: 36px; border-radius: 11px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #fff; display: grid; place-items: center;
-  box-shadow: 0 6px 16px rgba(79, 110, 247, .32);
+  display: grid; place-items: center;
+  background: rgba(233, 162, 59, .14);
+  box-shadow: inset 0 0 0 1px rgba(233, 162, 59, .28);
 }
-.brand-icon svg { width: 20px; height: 20px; }
+.brand-icon svg { width: 26px; height: 26px; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .brand-text strong { font-size: 15px; letter-spacing: .2px; }
 .brand-text span { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -154,6 +154,17 @@ html[data-theme="dark"] .btn-primary { color: #fff; }
 .crumb.current { color: var(--text); font-weight: 600; }
 .crumb-sep { color: var(--line-strong); font-size: 12px; padding: 0 1px; user-select: none; }
 
+/* 微信内置浏览器上传受限提示 */
+.wx-tip {
+  display: flex; align-items: center; gap: 10px;
+  margin: 10px 20px -4px; padding: 9px 12px;
+  border-radius: 10px; background: #fff7e6; border: 1px solid #ffd591;
+  color: #874d00; font-size: 13px; line-height: 1.5;
+}
+.wx-tip span { flex: 1; }
+.wx-tip button { border: none; background: none; font-size: 17px; line-height: 1; color: inherit; cursor: pointer; padding: 2px 4px; }
+body.notes-view .wx-tip, body.shares-view .wx-tip, body.settings-view .wx-tip { display: none; }
+
 .topbar-tools { display: flex; align-items: center; gap: 8px; }
 
 .search {
@@ -178,6 +189,22 @@ html[data-theme="dark"] .btn-primary { color: #fff; }
   transition: background .15s, color .15s, border-color .15s;
 }
 .icon-btn:hover { background: var(--panel-2); border-color: var(--line); color: var(--text); }
+.icon-btn:disabled { opacity: .45; cursor: wait; }
+
+/* OCR 设置面板 */
+.ocr-paths { display: flex; flex-direction: column; gap: 14px; }
+.ocr-path-item { display: flex; flex-direction: column; gap: 6px; }
+.ocr-path-item code {
+  font-size: 12.5px; word-break: break-all; line-height: 1.5;
+  padding: 8px 10px; border-radius: 8px;
+  background: var(--panel-2, #0A1526); border: 1px solid var(--line);
+  color: var(--text); opacity: .85;
+}
+.ocr-advanced { margin-top: 16px; font-size: 14px; color: var(--muted, #8FA3BF); }
+.ocr-advanced summary { cursor: pointer; user-select: none; }
+.ocr-advanced summary:hover { color: var(--text); }
+.ocr-advanced label.sec-label { margin-top: 14px; }
+.ocr-advanced input { width: 100%; }
 .icon-btn svg { width: 17px; height: 17px; }
 .only-mobile { display: none !important; }
 
@@ -446,6 +473,7 @@ html[data-theme="dark"] .rmk-flag { color: #f0b95a; }
 }
 .dialog input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); background: var(--panel); }
 .dialog-text { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0 0 18px; word-break: break-all; }
+#confirmText { white-space: pre-line; max-height: 45vh; overflow-y: auto; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
 .btn-ghost { padding: 9px 16px; border-radius: 9px; color: var(--text-2); font-size: 13px; font-weight: 500; }
 .btn-ghost:hover { background: var(--panel-2); }
@@ -453,11 +481,12 @@ html[data-theme="dark"] .rmk-flag { color: #f0b95a; }
 .btn-danger:hover { filter: brightness(1.06); }
 .dialog-actions .btn-primary { padding: 9px 18px; }
 
-/* 备注对话框 */
+/* 备注对话框（放大版，容纳 OCR 识别结果等长文本） */
 .dialog-em { font-style: normal; font-weight: 500; font-size: 13px; color: var(--muted); }
+#remarkModal .dialog { width: min(760px, 100%); }
 #remarkText {
-  width: 100%; border: 1px solid var(--line-strong); border-radius: 9px;
-  padding: 9px 11px; font: inherit; font-size: 13px; line-height: 1.55;
+  width: 100%; min-height: 320px; border: 1px solid var(--line-strong); border-radius: 9px;
+  padding: 12px 14px; font: inherit; font-size: 14px; line-height: 1.65;
   background: var(--panel-2); color: var(--text); resize: vertical; outline: none;
 }
 #remarkText:focus { border-color: var(--accent); }
@@ -1441,7 +1470,7 @@ html[data-theme="dark"] .log-item.lv-warn .log-tag { color: var(--warn); }
   .audio-cover { width: 68px; height: 68px; border-radius: 12px; }
   .audio-cover svg { width: 26px; height: 26px; }
   .audio-title { font-size: 15px; }
-  .topbar-tools .icon-btn#btnNewFolder { display: none; }
+  /* 手机宽度下保留顶栏新建按钮（此前藏进抽屉导致不开菜单找不到） */
   #viewToggle { display: none; }
   .set-head { padding: 16px 14px 12px; align-items: flex-start; gap: 10px; }
   .set-title h2 { font-size: 17px; }

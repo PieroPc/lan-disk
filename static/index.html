@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#4f6ef7">
+<meta name="theme-color" content="#E9A23B">
 <title>局域网云盘</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg?v=__V__">
+<link rel="icon" type="image/png" sizes="180x180" href="/static/icon-180.png?v=__V__">
+<link rel="apple-touch-icon" href="/static/icon-180.png?v=__V__">
 <link rel="stylesheet" href="/static/style.css?v=__V__">
 </head>
 <body>
@@ -25,7 +28,19 @@
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A6 6 0 0 0 6.2 9.5 4 4 0 0 0 6.5 19h11Z"/></svg>
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#F3AC45"/><stop offset="1" stop-color="#DE9520"/>
+            </linearGradient>
+            <linearGradient id="gf" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFDF8E"/><stop offset=".45" stop-color="#FFD06A"/><stop offset="1" stop-color="#FBB840"/>
+            </linearGradient>
+          </defs>
+          <path d="M4 13.5Q4 10 7.5 10h9.8q1.5 0 2.6 1.1l2.3 2.3q.5.5 1.2.5H40.5Q44 13.9 44 17.4V35q0 3.5-3.5 3.5h-33Q4 38.5 4 35Z" fill="url(#gb)"/>
+          <path d="M4 18.5h40V35q0 3.5-3.5 3.5h-33Q4 38.5 4 35Z" fill="url(#gf)"/>
+          <path d="M5.5 19.5h37v1.2h-37Z" fill="#FFFFFF" opacity=".4"/>
+        </svg>
       </div>
       <div class="brand-text">
         <strong>局域网云盘</strong>
@@ -56,6 +71,10 @@
       <button class="nav-item" data-view="image">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 4.5-4.5L13 17l3-3 4 4"/></svg>
         图片
+      </button>
+      <button class="nav-item" id="btnAlbumSync" title="把手机相册里的照片视频备份到云盘，已备份过的自动跳过">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10"/><path d="m3 16 5-5 4 4"/><circle cx="14.5" cy="9.5" r="1.5"/><path d="M17 18v6m3-3h-6"/></svg>
+        同步相册
       </button>
       <button class="nav-item" data-view="video">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg>
@@ -129,6 +148,11 @@
         </button>
       </div>
     </header>
+
+    <div class="wx-tip hidden" id="wxTip">
+      <span>微信内可能无法选择文件上传 —— 点右上角「···」选「在浏览器打开」即可正常上传</span>
+      <button id="wxTipClose" title="关闭">×</button>
+    </div>
 
     <div class="subbar" id="subbar">
       <div class="subbar-left" id="subbarLeft"></div>
@@ -271,6 +295,7 @@
             <button data-tab="about" class="active">关于我们</button>
             <button data-tab="logs">系统日志</button>
             <button data-tab="security">登录安全</button>
+            <button data-tab="ocr">文字识别</button>
           </div>
         </div>
 
@@ -397,6 +422,39 @@
               <p>提示：口令保存在本机 <code>security.json</code>，重启后依然生效。忘记口令时，删除该文件并重启云盘即可恢复无密码访问。</p>
             </div>
           </section>
+          <section class="set-pane hidden" id="paneOcr">
+            <div class="sec-card">
+              <div class="sec-info">
+                <h3>微信本地 OCR · 图片文字识别</h3>
+                <p id="ocrState">检测中…</p>
+              </div>
+            </div>
+            <div class="sec-card">
+              <div class="ocr-paths">
+                <div class="ocr-path-item">
+                  <span class="sec-label">OCR 引擎（wxocr.dll）</span>
+                  <code id="ocrEngPath">—</code>
+                </div>
+                <div class="ocr-path-item">
+                  <span class="sec-label">微信目录（mmmojo_64.dll）</span>
+                  <code id="ocrWxPath">—</code>
+                </div>
+              </div>
+              <details class="ocr-advanced">
+                <summary>引擎没被自动找到？手动指定路径</summary>
+                <label class="sec-label" for="ocrEngInput">wxocr.dll 完整路径</label>
+                <input type="text" id="ocrEngInput" placeholder="例如 C:\Users\你\AppData\Roaming\Tencent\xwechat\XPlugin\plugins\WeChatOcr\8096\extracted\wxocr.dll" autocomplete="off">
+                <label class="sec-label" for="ocrWxInput">微信安装目录</label>
+                <input type="text" id="ocrWxInput" placeholder="例如 C:\Program Files\Tencent\Weixin\4.1.15.50" autocomplete="off">
+                <div class="sec-actions">
+                  <button class="btn-primary" id="ocrSave">保存</button>
+                </div>
+              </details>
+            </div>
+            <div class="sec-note">
+              <p>提示：识别完全在本地完成，<b>图片不会上传到任何服务器</b>，不需要联网、不需要任何账号。识别结果自动写入图片的备注，全局搜索可以搜到。引擎来自本机微信客户端，装微信即可使用。</p>
+            </div>
+          </section>
         </div>
       </div>
     </section>
@@ -452,6 +510,9 @@
         </a>
         <button class="icon-btn" id="previewEdit" title="编辑" hidden>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16Z"/></svg>
+        </button>
+        <button class="icon-btn" id="previewOcr" title="文字识别（OCR）" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 16v2a2 2 0 0 1-2 2h-2"/><path d="M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M8 9h8"/><path d="M8 13h6"/></svg>
         </button>
         <button class="icon-btn" data-close title="关闭">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
@@ -558,7 +619,7 @@
   <div class="dialog">
     <h3>备注 <em class="dialog-em" id="remarkName"></em></h3>
     <p class="dialog-text">写点说明，比如用途、来自哪里；文件移动、重命名时备注会跟着走。</p>
-    <textarea id="remarkText" rows="4" maxlength="2000" placeholder="例如：这是给客户 V2 版的最终稿，别删"></textarea>
+    <textarea id="remarkText" rows="14" maxlength="2000" placeholder="例如：这是给客户 V2 版的最终稿，别删"></textarea>
     <div class="dialog-actions">
       <button type="button" class="btn-ghost" data-close>取消</button>
       <button type="button" class="btn-ghost" id="remarkClear">清除备注</button>
@@ -570,6 +631,7 @@
 <div class="toasts" id="toasts"></div>
 <input type="file" id="filePicker" multiple hidden>
 <input type="file" id="noteImagePicker" accept="image/*" multiple hidden>
+<input type="file" id="albumPicker" accept="image/*,video/*" multiple hidden>
 
 <script src="/static/app.js?v=__V__"></script>
 </body>

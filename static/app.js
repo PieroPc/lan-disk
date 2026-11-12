@@ -42,6 +42,13 @@
     legacy: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 14h6"/>',
   };
   const icon = (kind) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${P[kind] || P.file}</svg>`;
+  /* Windows 风格黄色文件夹（实心填充，用于所有目录图标） */
+  const FOLDER_SVG = '<svg viewBox="0 0 48 48" fill="none" class="f-folder">'
+    + '<path d="M4 13.5Q4 10 7.5 10h9.8q1.5 0 2.6 1.1l2.3 2.3q.5.5 1.2.5H40.5Q44 13.9 44 17.4V35q0 3.5-3.5 3.5h-33Q4 38.5 4 35Z" fill="#E8A233"/>'
+    + '<path d="M4 18.5h40V35q0 3.5-3.5 3.5h-33Q4 38.5 4 35Z" fill="#FFCE62"/>'
+    + '<path d="M5.5 19.5h37v1.5h-37Z" fill="#FFFFFF" opacity=".45"/>'
+    + '</svg>';
+  const folderIco = () => FOLDER_SVG;
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -154,7 +161,7 @@
     const sel = state.sel.has(it.path);
     const thumb = it.kind === 'image'
       ? `<img src="/api/raw?${qs({ path: it.path })}" loading="lazy" alt="" draggable="false">`
-      : icon(it.kind);
+      : (it.is_dir ? folderIco() : icon(it.kind));
     return `<div class="card v-${it.kind} ${sel ? 'selected' : ''}" data-path="${esc(it.path)}" data-name="${esc(it.name)}" data-folder="${it.is_dir ? 1 : 0}" data-kind="${it.kind}" draggable="true">
       <button class="checkbox ${sel ? 'on' : ''}" data-act="select" title="选择"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"/></svg></button>
       ${itemActions(it)}
@@ -168,7 +175,7 @@
     const sel = state.sel.has(it.path);
     const ico = it.kind === 'image'
       ? `<img src="/api/raw?${qs({ path: it.path })}" loading="lazy" alt="" draggable="false">`
-      : icon(it.kind);
+      : (it.is_dir ? folderIco() : icon(it.kind));
     return `<div class="row v-${it.kind} ${sel ? 'selected' : ''}" data-path="${esc(it.path)}" data-name="${esc(it.name)}" data-folder="${it.is_dir ? 1 : 0}" data-kind="${it.kind}" draggable="true">
       <button class="checkbox ${sel ? 'on' : ''}" data-act="select"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"/></svg></button>
       <div class="row-icons">${ico}</div>
@@ -272,6 +279,7 @@
     if (state.view === 'settings') {
       if (setting.tab === 'logs') await loadLogs(true);
       else if (setting.tab === 'security') await loadSecurity();
+      else if (setting.tab === 'ocr') await loadOcrConfig();
       else await loadAbout(true);
       return;
     }
@@ -346,10 +354,11 @@
 
   $('#crumbs').addEventListener('click', (e) => {
     const b = e.target.closest('.crumb');
-    if (!b || !b.dataset.path) return;
+    if (!b) return;
     if (state.query) { clearSearch(); return; }
+    // 根目录「全部文件」的 data-path 是空字符串，不能用它判空拦截
     state.query = '';
-    loadDir(b.dataset.path);
+    loadDir(b.dataset.path || '');
   });
 
   $$('.nav-item[data-view]').forEach((b) => b.addEventListener('click', () => {
@@ -407,16 +416,170 @@
   }
 
   /* ---------------- 上传 ---------------- */
+  /* 微信内置浏览器：文件选择器受限，给提示 */
+  const IS_WX = /MicroMessenger/i.test(navigator.userAgent);
+  if (IS_WX && !sessionStorage.getItem('wxTipClosed')) $('#wxTip').classList.remove('hidden');
+  $('#wxTipClose').addEventListener('click', () => {
+    $('#wxTip').classList.add('hidden');
+    sessionStorage.setItem('wxTipClosed', '1');
+  });
+
   $('#btnUploadMain').addEventListener('click', () => {
     if (state.view === 'notes') { newNote(); return; }
     pickFiles();
   });
   $('#btnUploadSm').addEventListener('click', pickFiles);
-  function pickFiles() { if (state.query) { toast('请先退出搜索再上传'); return; } $('#filePicker').click(); }
+  function pickFiles() {
+    if (state.query) { toast('请先退出搜索再上传'); return; }
+    $('#filePicker').click();
+    // 微信内置浏览器常常调不起文件选择器且无任何提示，延迟后兜底提醒
+    if (IS_WX) {
+      let picked = false;
+      $('#filePicker').addEventListener('change', () => { picked = true; }, { once: true });
+      setTimeout(() => {
+        if (!picked) toast('微信里可能选不了文件：点右上角「···」→「在浏览器打开」', 'err');
+      }, 1500);
+    }
+  }
   $('#filePicker').addEventListener('change', (e) => {
     const files = Array.from(e.target.files || []);
     e.target.value = '';
     if (files.length) uploadFiles(files, state.view === 'browse' ? state.path : '');
+  });
+
+  /* ---------------- 同步相册 ---------------- */
+  const ALBUM_DIR = '相册备份';
+
+  /* 纯 JS SHA-256（局域网 http 页面没有 crypto.subtle；分块喂入，大视频不占内存） */
+  const _SHA_K = new Uint32Array([
+    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2]);
+  function sha256Init() {
+    return { h: new Uint32Array([0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19]), buf: new Uint8Array(64), bufLen: 0, total: 0, w: new Uint32Array(64) };
+  }
+  function _shaBlock(s, p, off) {
+    const w = s.w, h = s.h;
+    for (let j = 0; j < 16; j++) w[j] = ((p[off + 4 * j] << 24) | (p[off + 4 * j + 1] << 16) | (p[off + 4 * j + 2] << 8) | p[off + 4 * j + 3]) | 0;
+    for (let j = 16; j < 64; j++) {
+      const x = w[j - 15], y = w[j - 2];
+      const s0 = ((x >>> 7) | (x << 25)) ^ ((x >>> 18) | (x << 14)) ^ (x >>> 3);
+      const s1 = ((y >>> 17) | (y << 15)) ^ ((y >>> 19) | (y << 13)) ^ (y >>> 10);
+      w[j] = (w[j - 16] + s0 + w[j - 7] + s1) | 0;
+    }
+    let a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], hh = h[7];
+    for (let j = 0; j < 64; j++) {
+      const S1 = ((e >>> 6) | (e << 26)) ^ ((e >>> 11) | (e << 21)) ^ ((e >>> 25) | (e << 7));
+      const t1 = (hh + S1 + ((e & f) ^ (~e & g)) + _SHA_K[j] + w[j]) | 0;
+      const S0 = ((a >>> 2) | (a << 30)) ^ ((a >>> 13) | (a << 19)) ^ ((a >>> 22) | (a << 10));
+      const t2 = (S0 + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+      hh = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
+    }
+    h[0] = (h[0] + a) | 0; h[1] = (h[1] + b) | 0; h[2] = (h[2] + c) | 0; h[3] = (h[3] + d) | 0;
+    h[4] = (h[4] + e) | 0; h[5] = (h[5] + f) | 0; h[6] = (h[6] + g) | 0; h[7] = (h[7] + hh) | 0;
+  }
+  function sha256Update(s, u8) {
+    s.total += u8.length;
+    let i = 0;
+    if (s.bufLen) {
+      const take = Math.min(64 - s.bufLen, u8.length);
+      s.buf.set(u8.subarray(0, take), s.bufLen);
+      s.bufLen += take; i = take;
+      if (s.bufLen === 64) { _shaBlock(s, s.buf, 0); s.bufLen = 0; }
+    }
+    for (; i + 64 <= u8.length; i += 64) _shaBlock(s, u8, i);
+    if (i < u8.length) { s.buf.set(u8.subarray(i), 0); s.bufLen = u8.length - i; }
+  }
+  function sha256Final(s) {
+    const bits = s.total * 8;
+    const hi = Math.floor(bits / 4294967296), lo = bits >>> 0;
+    const padLen = (s.bufLen < 56 ? 56 : 120) - s.bufLen;
+    const pad = new Uint8Array(padLen + 8);
+    pad[0] = 0x80;
+    pad[padLen] = (hi >>> 24) & 255; pad[padLen + 1] = (hi >>> 16) & 255;
+    pad[padLen + 2] = (hi >>> 8) & 255; pad[padLen + 3] = hi & 255;
+    pad[padLen + 4] = (lo >>> 24) & 255; pad[padLen + 5] = (lo >>> 16) & 255;
+    pad[padLen + 6] = (lo >>> 8) & 255; pad[padLen + 7] = lo & 255;
+    sha256Update(s, pad);
+    let out = '';
+    for (let j = 0; j < 8; j++) out += ('00000000' + (s.h[j] >>> 0).toString(16)).slice(-8);
+    return out;
+  }
+  async function fileSha256(file) {
+    const s = sha256Init();
+    const CHUNK = 4 * 1024 * 1024;
+    for (let off = 0; off < file.size; off += CHUNK) {
+      const buf = await file.slice(off, Math.min(off + CHUNK, file.size)).arrayBuffer();
+      sha256Update(s, new Uint8Array(buf));
+    }
+    return sha256Final(s);
+  }
+
+  $('#btnAlbumSync').addEventListener('click', () => {
+    if (state.query) { toast('请先退出搜索再同步相册'); return; }
+    const picker = $('#albumPicker');
+    picker.value = '';
+    picker.click();
+  });
+
+  $('#albumPicker').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = '';
+    if (!files.length) return;
+    toast('正在核对已备份的照片…');
+    const knownKeys = new Set();
+    const knownHashes = new Set();
+    try {
+      const d = await api('/api/album/known');
+      (d.known || []).forEach((k) => {
+        knownKeys.add(k.name + '\u0000' + k.size);
+        if (k.sha) knownHashes.add(k.sha);
+      });
+    } catch (_) { /* 拉取失败就全量上传，靠服务器改名兜底 */ }
+    // 第一轮：文件名+大小（快，大部分命中）
+    const fresh = [], skipped = [], needHash = [];
+    files.forEach((f) => {
+      if (knownKeys.has(f.name + '\u0000' + f.size)) skipped.push(f);
+      else needHash.push(f);
+    });
+    // 第二轮：内容哈希。手机选图器（如小米安全访问）每次都换临时文件名，
+    // 名字对不上但内容一样的照片，靠哈希照样认出来，不会重复备份
+    if (needHash.length && knownHashes.size) {
+      toast(`正在比对 ${needHash.length} 个文件的内容…`);
+      for (const f of needHash) {
+        try {
+          if (knownHashes.has(await fileSha256(f))) { skipped.push(f); continue; }
+        } catch (_) { /* 读不出来就当新文件 */ }
+        fresh.push(f);
+      }
+    } else {
+      fresh.push(...needHash);
+    }
+    if (!fresh.length) {
+      toast(`相册已是最新：${skipped.length} 个文件之前都备份过，无需上传`);
+      return;
+    }
+    let text = `选中 ${files.length} 个文件：${fresh.length} 个是新的，将备份到「${ALBUM_DIR}」文件夹。`;
+    if (skipped.length) {
+      const names = skipped.slice(0, 10).map((f) => `· ${f.name}`).join('\n');
+      text += `\n\n已备份过、自动跳过 ${skipped.length} 个（内容相同）：\n${names}`;
+      if (skipped.length > 10) text += `\n…等 ${skipped.length} 个`;
+    }
+    const ok = await askConfirm({
+      title: '同步相册',
+      text,
+      okText: '开始备份',
+      okClass: 'btn-primary',
+    });
+    if (!ok) return;
+    await uploadFiles(fresh, ALBUM_DIR);
+    toast(`相册同步完成：新增备份 ${fresh.length} 个文件，跳过重复 ${skipped.length} 个`);
+    if (state.view === 'browse' && !state.path && !state.query) loadDir('');
   });
 
   function upItem(name) {
@@ -604,13 +767,14 @@
     });
   }
 
-  function askConfirm({ title, text, okText = '删除' }) {
+  function askConfirm({ title, text, okText = '删除', okClass = 'btn-danger' }) {
     return new Promise((resolve) => {
       const modal = $('#confirmModal');
       $('#confirmTitle').textContent = title;
       $('#confirmText').textContent = text;
       const ok = $('#confirmOk');
       ok.textContent = okText;
+      ok.className = okClass;
       openModal('#confirmModal');
       const onOk = () => { cleanup(); resolve(true); };
       const onClose = () => { cleanup(); resolve(false); };
@@ -632,7 +796,7 @@
   function treeHTML(nodes, depth) {
     return nodes.map((n) => `
       <div class="tree-row" data-path="${esc(n.path)}" style="padding-left:${8 + depth * 16}px">
-        ${icon('folder')}<span>${esc(n.name)}</span>
+        ${folderIco()}<span>${esc(n.name)}</span>
       </div>
       ${n.children && n.children.length ? treeHTML(n.children, depth + 1) : ''}`).join('');
   }
@@ -649,7 +813,7 @@
     $('#moveTree').innerHTML = '<div class="tree-note">加载中…</div>';
     try {
       const data = await api('/api/tree');
-      $('#moveTree').innerHTML = `<div class="tree-row active" data-path="" style="padding-left:8px">${icon('folder')}<span>全部文件（根目录）</span></div>`
+      $('#moveTree').innerHTML = `<div class="tree-row active" data-path="" style="padding-left:8px">${folderIco()}<span>全部文件（根目录）</span></div>`
         + treeHTML(data.children || [], 1)
         + (data.truncated ? '<div class="tree-note">文件夹较多，仅显示前 500 个</div>' : '');
     } catch (e) {
@@ -1351,7 +1515,7 @@
       const depth = Math.min(bare.split('/').length - 1, 5);
       const nm = bare.split('/').pop() || en.name;
       return `<div class="ar-row" style="--d:${depth}">
-        <span class="ar-ico">${en.dir ? icon('folder') : iconForPath(en.name)}</span>
+        <span class="ar-ico">${en.dir ? folderIco() : iconForPath(en.name)}</span>
         <span class="ar-nm" title="${esc(en.name)}">${esc(nm)}${en.dir ? '/' : ''}</span>
         <span class="ar-sz">${en.dir ? '—' : fmtSize(en.size)}</span>
         <span class="ar-tm">${fmtTime(en.mtime)}</span>
@@ -1407,6 +1571,7 @@
     const editBtn = $('#previewEdit');
     editBtn.hidden = !EDITABLE.includes(item.kind);
     editBtn.title = '编辑源码';
+    $('#previewOcr').hidden = item.kind !== 'image';
     openModal('#previewModal');
     await renderPreview(item);
   }
@@ -1553,6 +1718,36 @@
     else toast('先打开一个文件再分享', 'err');
   });
 
+  /* 图片预览：微信 OCR 文字识别，结果写入备注 */
+  $('#previewOcr').addEventListener('click', async () => {
+    if (!previewItem) return;
+    const btn = $('#previewOcr');
+    btn.disabled = true;
+    toast('正在识别…（微信本地引擎）');
+    try {
+      const r = await api('/api/ocr', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: previewItem.path }),
+      });
+      remarkTarget = previewItem;
+      $('#remarkName').textContent = previewItem.name;
+      const ta = $('#remarkText');
+      ta.value = r.remark || '';
+      openModal('#remarkModal');
+      // 备注里可能已经有很多旧内容：选中新写入的 OCR 段，窗口直接滚到新文字
+      const start = ta.value.lastIndexOf('【OCR ');
+      if (start >= 0) {
+        ta.focus();
+        try { ta.setSelectionRange(start, ta.value.length); } catch (_) { /* 忽略 */ }
+      }
+      toast(r.dedup ? '识别完成：结果与上次相同，未重复追加' : '识别完成，文字已写入备注');
+    } catch (e) {
+      toast(e.message, 'err');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
   $('#selShare').addEventListener('click', () => {
     const paths = Array.from(state.sel);
     if (!paths.length) { toast('先选一个文件', 'err'); return; }
@@ -1629,7 +1824,7 @@
   function iconForPath(p) {
     const name = String(p || '').split('/').pop();
     const dot = name.lastIndexOf('.');
-    if (dot <= 0) return icon('folder');        // 没有扩展名，按文件夹画
+    if (dot <= 0) return folderIco();           // 没有扩展名，按文件夹画
     return icon(PATH_KINDS[name.slice(dot + 1).toLowerCase()] || 'file');
   }
 
@@ -2424,15 +2619,17 @@
   }
 
   function setSettingsTab(tab) {
-    setting.tab = ['logs', 'security'].includes(tab) ? tab : 'about';
+    setting.tab = ['logs', 'security', 'ocr'].includes(tab) ? tab : 'about';
     $('#settingsView').dataset.tab = setting.tab;
     $$('#setTabs button').forEach((b) => b.classList.toggle('active', b.dataset.tab === setting.tab));
     $('#paneAbout').classList.toggle('hidden', setting.tab !== 'about');
     $('#paneLogs').classList.toggle('hidden', setting.tab !== 'logs');
     $('#paneSecurity').classList.toggle('hidden', setting.tab !== 'security');
+    $('#paneOcr').classList.toggle('hidden', setting.tab !== 'ocr');
     $('#setBody').scrollTop = 0;
     if (setting.tab === 'logs') loadLogs(true);
     else if (setting.tab === 'security') loadSecurity();
+    else if (setting.tab === 'ocr') loadOcrConfig();
     else loadAbout(true);
   }
 
@@ -2682,6 +2879,38 @@
     try { await api('/api/logout', { method: 'POST' }); } catch (_) { /* 忽略 */ }
     location.reload();
   });
+
+  /* ---------------- 微信本地 OCR 配置 ---------------- */
+
+  async function loadOcrConfig() {
+    try {
+      const d = await api('/api/ocr/config');
+      $('#ocrEngPath').textContent = d.ocr_dll || '未找到';
+      $('#ocrWxPath').textContent = d.wechat_dir || '未找到';
+      $('#ocrEngInput').value = d.manual ? (d.ocr_dll || '') : '';
+      $('#ocrWxInput').value = d.manual ? (d.wechat_dir || '') : '';
+      $('#ocrState').textContent = d.found
+        ? `已就绪 — 识别完全在本地进行，图片不上传${d.manual ? '（使用手动指定路径）' : ''}`
+        : '未找到微信 OCR 引擎 — 请确认本机已安装微信 4.x，或展开下方手动指定路径';
+    } catch (e) {
+      $('#ocrState').textContent = e.message;
+    }
+  }
+
+  async function saveOcrConfig() {
+    const ocr_dll = $('#ocrEngInput').value.trim();
+    const wechat_dir = $('#ocrWxInput').value.trim();
+    try {
+      const r = await api('/api/ocr/config', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ocr_dll, wechat_dir }),
+      });
+      toast(r.cleared ? '已恢复自动检测' : '手动路径已保存');
+      loadOcrConfig();
+    } catch (e) { toast(e.message, 'err'); }
+  }
+
+  $('#ocrSave').addEventListener('click', saveOcrConfig);
 
   $('#logFilters').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-level]');

@@ -1,0 +1,101 @@
+{"id": 115, "ts": 1794117815.938, "level": "warn", "action": "log.clear", "message": "系统日志已清空", "detail": "清除了 1 条记录", "ip": "192.168.2.79"}
+{"id": 116, "ts": 1794117944.397, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注", "detail": "", "ip": "192.168.2.79"}
+{"id": 117, "ts": 1794118645.495, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 117, "ts": 1794118742.432, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注", "detail": "", "ip": "192.168.2.79"}
+{"id": 118, "ts": 1794118748.764, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "【OCR 2026-11-08 13:59】QUICK REVIEW\n拼音输入法\n从生手到顺手·四个阶段\n1分18秒\n卡…", "ip": "192.168.2.79"}
+{"id": 119, "ts": 1794118772.913, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注", "detail": "", "ip": "192.168.2.79"}
+{"id": 120, "ts": 1794118774.466, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "【OCR 2026-11-08 13:59】QUICK REVIEW\n拼音输入法\n从生手到顺手·四个阶段\n1分18秒\n卡…", "ip": "192.168.2.79"}
+{"id": 121, "ts": 1794118813.821, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 122, "ts": 1794118826.462, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注", "detail": "", "ip": "192.168.2.79"}
+{"id": 123, "ts": 1794118828.131, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "【OCR 2026-11-08 13:59】QUICK REVIEW\n拼音输入法\n从生手到顺手·四个阶段\n1分18秒\n卡…", "ip": "192.168.2.79"}
+{"id": 124, "ts": 1794119189.626, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 125, "ts": 1794119218.421, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注", "detail": "", "ip": "127.0.0.1"}
+{"id": 126, "ts": 1794119224.194, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "【OCR 2026-11-08 13:59】QUICK REVIEW\n拼音输入法\n从生手到顺手·四个阶段\n1分18秒\n卡…", "ip": "127.0.0.1"}
+{"id": 127, "ts": 1794119449.626, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 128, "ts": 1794119460.562, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注（与上次相同，未重复）", "detail": "", "ip": "127.0.0.1"}
+{"id": 129, "ts": 1794119461.04, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注（与上次相同，未重复）", "detail": "", "ip": "127.0.0.1"}
+{"id": 130, "ts": 1794119486.059, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注（与上次相同，未重复）", "detail": "", "ip": "127.0.0.1"}
+{"id": 124, "ts": 1794119568.173, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注", "detail": "", "ip": "192.168.2.79"}
+{"id": 125, "ts": 1794119569.481, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "【OCR 2026-11-08 13:59】QUICK REVIEW\n拼音输入法\n从生手到顺手·四个阶段\n1分18秒\n卡…", "ip": "192.168.2.79"}
+{"id": 126, "ts": 1794119580.39, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 766 秒", "ip": ""}
+{"id": 131, "ts": 1794119602.506, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 132, "ts": 1794119611.335, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注（与上次相同，未重复）", "detail": "", "ip": "192.168.2.79"}
+{"id": 133, "ts": 1794119614.571, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "【OCR 2026-11-08 13:59】QUICK REVIEW\n拼音输入法\n从生手到顺手·四个阶段\n1分18秒\n卡…", "ip": "192.168.2.79"}
+{"id": 134, "ts": 1794119632.404, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注（与上次相同，未重复）", "detail": "", "ip": "192.168.2.79"}
+{"id": 135, "ts": 1794119648.721, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "sdasd", "ip": "192.168.2.79"}
+{"id": 136, "ts": 1794119667.082, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "捋捋", "ip": "192.168.2.79"}
+{"id": 137, "ts": 1794119683.355, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注", "detail": "", "ip": "192.168.2.79"}
+{"id": 138, "ts": 1794119684.912, "level": "ok", "action": "remark", "message": "备注「封面-3x4.png」", "detail": "捋捋\n\n【OCR 2026-11-08 14:34】QUICK REVIEW\n拼音输入法\n从生手到顺手·四个阶段\n1分1…", "ip": "192.168.2.79"}
+{"id": 139, "ts": 1794119724.406, "level": "info", "action": "ocr", "message": "识别「shot.jpg」失败：没有识别出文字（图片里可能没有可读文本）", "detail": "", "ip": "192.168.2.79"}
+{"id": 140, "ts": 1794119724.406, "level": "warn", "action": "http.400", "message": "POST /api/ocr → 400", "detail": "", "ip": "192.168.2.79"}
+{"id": 141, "ts": 1794119732.492, "level": "ok", "action": "upload", "message": "上传 1 个文件到 根目录", "detail": "fastapi-one-cover-3x4.png · 共 645.7 KB", "ip": "192.168.2.79"}
+{"id": 142, "ts": 1794119737.604, "level": "ok", "action": "ocr", "message": "OCR「fastapi-one-cover-3x4.png」，140 字已写入备注", "detail": "", "ip": "192.168.2.79"}
+{"id": 143, "ts": 1794119739.097, "level": "ok", "action": "remark", "message": "备注「fastapi-one-cover-3x4.png」", "detail": "【OCR 2026-11-08 14:35】FASTAPI\n语法到落地\nuvicorn main:app\nFastAPI…", "ip": "192.168.2.79"}
+{"id": 144, "ts": 1794120187.124, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 145, "ts": 1794120208.393, "level": "warn", "action": "http.405", "message": "GET /api/remarks → 405", "detail": "path=demo%2F%E5%B0%81%E9%9D%A2-3x4.png", "ip": "127.0.0.1"}
+{"id": 146, "ts": 1794120209.164, "level": "ok", "action": "ocr", "message": "OCR「封面-3x4.png」，139 字已写入备注（与上次相同，未重复）", "detail": "", "ip": "127.0.0.1"}
+{"id": 147, "ts": 1794120256.233, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 148, "ts": 1794120503.515, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 149, "ts": 1794120528.987, "level": "ok", "action": "ocr", "message": "OCR「fastapi-one-cover-3x4.png」，140 字已写入备注（与上次相同，未重复）", "detail": "", "ip": "192.168.2.79"}
+{"id": 150, "ts": 1794120530.298, "level": "ok", "action": "remark", "message": "备注「fastapi-one-cover-3x4.png」", "detail": "【OCR 2026-11-08 14:48】FASTAPI\n语法到落地\nuvicorn main:app\nFastAPI…", "ip": "192.168.2.79"}
+{"id": 151, "ts": 1794120575.993, "level": "ok", "action": "remark", "message": "清除备注「封面-3x4.png」", "detail": "", "ip": "192.168.2.79"}
+{"id": 152, "ts": 1794397820.297, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8088 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 153, "ts": 1794397927.208, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 154, "ts": 1794397955.959, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 155, "ts": 1794398013.179, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 156, "ts": 1794398136.078, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 156, "ts": 1794398155.207, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 142 秒", "ip": ""}
+{"id": 157, "ts": 1794398276.163, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 158, "ts": 1794398291.596, "level": "ok", "action": "mkdir", "message": "新建文件夹「111」", "detail": "位置 demo", "ip": "192.168.2.79"}
+{"id": 159, "ts": 1794398390.352, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 114 秒", "ip": ""}
+{"id": 160, "ts": 1794398443.238, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 161, "ts": 1794398520.871, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 162, "ts": 1794398810.11, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 289 秒", "ip": ""}
+{"id": 163, "ts": 1794398820.803, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8099 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 164, "ts": 1794398864.76, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 165, "ts": 1794399048.721, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 183 秒", "ip": ""}
+{"id": 166, "ts": 1794399145.177, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 167, "ts": 1794399447.268, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 302 秒", "ip": ""}
+{"id": 168, "ts": 1794399511.934, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 169, "ts": 1794399522.664, "level": "ok", "action": "upload", "message": "上传 1 个文件到 根目录", "detail": "上传测试 (1).jpg · 共 184.2 KB", "ip": "127.0.0.1"}
+{"id": 170, "ts": 1794399569.481, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 171, "ts": 1794399569.591, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 0 秒", "ip": ""}
+{"id": 172, "ts": 1794449790.037, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 173, "ts": 1794449828.206, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "IMG_20261112_1001.jpg · 共 718.1 KB", "ip": "127.0.0.1"}
+{"id": 174, "ts": 1794449828.217, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "VID_20261112_1002.mp4 · 共 718.1 KB", "ip": "127.0.0.1"}
+{"id": 175, "ts": 1794450030.53, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "IMG_20261112_1001 (1).jpg · 共 755 B", "ip": "127.0.0.1"}
+{"id": 176, "ts": 1794450030.538, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "VID_20261112_1002 (1).mp4 · 共 755 B", "ip": "127.0.0.1"}
+{"id": 177, "ts": 1794450103.38, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "IMG_20261112_1001 (2).jpg · 共 755 B", "ip": "127.0.0.1"}
+{"id": 178, "ts": 1794450103.388, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "VID_20261112_1002 (2).mp4 · 共 755 B", "ip": "127.0.0.1"}
+{"id": 179, "ts": 1794450187.767, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "IMG_20261112_2001.jpg · 共 755 B", "ip": "127.0.0.1"}
+{"id": 180, "ts": 1794450187.774, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "VID_20261112_2002.mp4 · 共 755 B", "ip": "127.0.0.1"}
+{"id": 181, "ts": 1794450523.921, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.12.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 182, "ts": 1794450524.51, "level": "info", "action": "system.stop", "message": "服务已停止", "detail": "本次运行 0 秒", "ip": ""}
+{"id": 181, "ts": 1794450562.713, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "cd-vertical-9x16.mp4 · 共 19.1 MB", "ip": "192.168.2.79"}
+{"id": 182, "ts": 1794450562.842, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "cd-wide-16x9.mp4 · 共 19.2 MB", "ip": "192.168.2.79"}
+{"id": 183, "ts": 1794450562.854, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "cover-3x4.png · 共 867.6 KB", "ip": "192.168.2.79"}
+{"id": 184, "ts": 1794450562.866, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "cover-4x3.png · 共 914.6 KB", "ip": "192.168.2.79"}
+{"id": 185, "ts": 1794450577.255, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "cover-16x9.png · 共 1.1 MB", "ip": "192.168.2.79"}
+{"id": 186, "ts": 1794450707.093, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450654882.jpg · 共 3.5 MB", "ip": "192.168.2.157"}
+{"id": 187, "ts": 1794450707.389, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450654948.jpg · 共 2.6 MB", "ip": "192.168.2.157"}
+{"id": 188, "ts": 1794450707.767, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450655015.jpg · 共 3.2 MB", "ip": "192.168.2.157"}
+{"id": 189, "ts": 1794450708.025, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450655099.jpg · 共 2.0 MB", "ip": "192.168.2.157"}
+{"id": 190, "ts": 1794450708.426, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450655160.jpg · 共 3.6 MB", "ip": "192.168.2.157"}
+{"id": 191, "ts": 1794450708.782, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450655238.jpg · 共 3.2 MB", "ip": "192.168.2.157"}
+{"id": 192, "ts": 1794450733.514, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685243.jpg · 共 3.5 MB", "ip": "192.168.2.157"}
+{"id": 193, "ts": 1794450733.774, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685296.jpg · 共 2.6 MB", "ip": "192.168.2.157"}
+{"id": 194, "ts": 1794450734.034, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685348.jpg · 共 2.0 MB", "ip": "192.168.2.157"}
+{"id": 195, "ts": 1794450734.407, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685395.jpg · 共 3.2 MB", "ip": "192.168.2.157"}
+{"id": 196, "ts": 1794450734.821, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685451.jpg · 共 3.6 MB", "ip": "192.168.2.157"}
+{"id": 197, "ts": 1794450735.194, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685513.jpg · 共 3.2 MB", "ip": "192.168.2.157"}
+{"id": 198, "ts": 1794450735.485, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685580.jpg · 共 2.4 MB", "ip": "192.168.2.157"}
+{"id": 199, "ts": 1794450735.761, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685643.jpg · 共 2.1 MB", "ip": "192.168.2.157"}
+{"id": 200, "ts": 1794450736.035, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794450685704.jpg · 共 2.2 MB", "ip": "192.168.2.157"}
+{"id": 201, "ts": 1794450911.344, "level": "warn", "action": "delete", "message": "删除 11 项", "detail": "1794450654882.jpg、1794450685395.jpg、1794450685451.jpg 等 11 项 · 释放 33.0 MB", "ip": "192.168.2.79"}
+{"id": 202, "ts": 1794450925.148, "level": "warn", "action": "delete", "message": "删除 4 项", "detail": "1794450685513.jpg、1794450685580.jpg、1794450685643.jpg 等 4 项 · 释放 9.9 MB", "ip": "192.168.2.79"}
+{"id": 203, "ts": 1794451301.414, "level": "ok", "action": "system.boot", "message": "局域网云盘 v1.13.1 已启动", "detail": "端口 8101 · 存储 D:\\WorkBuddy\\2026-11-06-17-38-07\\lan-disk\\storage", "ip": ""}
+{"id": 204, "ts": 1794452081.047, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794452032855.jpg · 共 3.5 MB", "ip": "192.168.2.157"}
+{"id": 205, "ts": 1794452081.358, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794452032939.jpg · 共 2.6 MB", "ip": "192.168.2.157"}
+{"id": 206, "ts": 1794452081.637, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794452033021.jpg · 共 2.0 MB", "ip": "192.168.2.157"}
+{"id": 207, "ts": 1794452082.023, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794452033108.jpg · 共 3.2 MB", "ip": "192.168.2.157"}
+{"id": 208, "ts": 1794452099.857, "level": "ok", "action": "upload", "message": "上传 1 个文件到 相册备份", "detail": "1794452049584.jpg · 共 3.6 MB", "ip": "192.168.2.157"}
